@@ -21,7 +21,6 @@ module map_e1
    integer, parameter :: ixtol = 39
    integer, parameter :: inpts = 40
    integer, parameter :: ingrf = 87
-   !contains
 end module map_e1
 
 program Exam1
@@ -29,9 +28,10 @@ program Exam1
 
    call init()    !Exibe a tela do cabeçalho e os parâmetros de configuração
 
+   
    do
       call param()   !get input from screen
-
+      
       call archon()  !search for bound states
    end do
 
@@ -72,7 +72,13 @@ subroutine init()
 
    ! calculate constants
    !pi = 4*atan(1.)  ! Defined in module io_all
-   POTMIN = 2**(1./6.)
+
+   ! Example 1:
+   !POTMIN = 2**(1.D0/6.D0)
+
+   !Exercise 1.7: Pot parabolic
+   POTMIN = 0.D0
+   
 
    !setup menu arrays, beginning with constant part
    call menu()
@@ -221,9 +227,12 @@ subroutine action(E, X1, X2, S)
    !find inner turning point; begin search at the well bottom
    x1 = POTMIN
    dx = .1
+
    do while(dx > XTOL)
       x1 = x1 - dx      !use simple search, going inward
+      
       if ( pot(x1) >= E ) then
+         
          x1 = x1 + dx
          dx = dx/2.
       end if
@@ -275,7 +284,11 @@ real function pot(x)
    ! new equilibrium position (i.e. the X value at which the force is zero)
    ! Lannard-Jonas potantlal in scaled variables
 
-   pot = 4*(x**(-12) - x**(-6))
+   ! Example 1:
+   !pot = 4*(x**(-12) - x**(-6))
+
+   ! Exercise 1.7: V(r) = r**2
+   pot = -1.D0 + x**2
 end function
 
 subroutine PCHECK()
@@ -343,7 +356,7 @@ subroutine archon()
    !search for bound states
    E1 = -1. !begin at the well bottom
    F1 = -PI/2. !the action ls zero there
-
+   
    !find the NLEVEL bound states
    do ILEVEL = 0, NLEVEL - 1
       CALL SEARCH(ILEVEL, E1, F1, X1, X2) !search for eigenvalue
@@ -357,6 +370,8 @@ subroutine archon()
 
       F1 = F1-PI !guess to begin search for next level
    end do
+
+   
 
    IF (TTERM) CALL PAUSE(' to continue...',1)
    IF (TTERM) CALL CLEAR

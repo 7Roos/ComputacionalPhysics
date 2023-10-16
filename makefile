@@ -11,7 +11,7 @@ COMMON_SOURCES = SETUP.f90 UTIL.f90 grfdat.f90
 EXECUTABLE = programa.out
 
 # Lista de arquivos objeto
-OBJECTS = $(COMMON_SOURCES:.f90=.o) $(SOURCE).o
+OBJECTS = $(COMMON_SOURCES:.f90=.o) $(SOURCE:.f90=.o)
 
 # Comando para compilar
 #compile:
@@ -28,6 +28,6 @@ $(EXECUTABLE): $(OBJECTS)
 
 # Comando para limpar (opcional)
 clean:
-	rm -f $(EXECUTABLE)
+	rm -f $(EXECUTABLE) $(OBJECTS)
 
 # Digite no terminal: make SOURCE=Example_file

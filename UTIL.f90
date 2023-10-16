@@ -185,17 +185,17 @@ contains
       MHILIM(62) = 1.
 
       MTYPE(63) = MTITLE
-      MPRMPT(63) = 'Change text output parameters'
+      MPRMPT(63) = '1) Change text output parameters'
       MLOLIM(63) = 0.
       MHILIM(63) = 0.
 
       MTYPE(64) = MTITLE
-      MPRMPT(64) = 'Change graphics output parameters'
+      MPRMPT(64) = '2) Change graphics output parameters'
       MLOLIM(64) = 0.
       MHILIM(64) = 0.
 
       MTYPE(65) = MTITLE
-      MPRMPT(65) = 'Return to main menu'
+      MPRMPT(65) = '3) Return to main menu'
       MLOLIM(65) = 0.
       MHILIM(65) = 1.
 
