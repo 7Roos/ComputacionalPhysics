@@ -8,10 +8,10 @@ FC = ifort
 COMMON_SOURCES = SETUP.f90 UTIL.f90 grfdat.f90
 
 # Nome do executável (opcional)
-EXECUTABLE = programa.out
+EXECUTABLE = program.out
 
 # Lista de arquivos objeto
-OBJECTS = $(COMMON_SOURCES:.f90=.o) $(SOURCE:.f90=.o)
+OBJECTS = $(COMMON_SOURCES:.f90=.o) $(S:.f90=.o)
 
 # Comando para compilar
 #compile:

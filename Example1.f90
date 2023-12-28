@@ -74,10 +74,10 @@ subroutine init()
    !pi = 4*atan(1.)  ! Defined in module io_all
 
    ! Example 1:
-   !POTMIN = 2**(1.D0/6.D0)
+   !POTMIN = 2**(1./6.)
 
    !Exercise 1.7: Pot parabolic
-   POTMIN = 0.D0
+   POTMIN = 0.
    
 
    !setup menu arrays, beginning with constant part
@@ -136,7 +136,7 @@ subroutine init()
 end subroutine
 
 subroutine param()
-   !C gets parameters from screen
+   ! gets parameters from screen
    ! ends program on request
    ! closes old files
    ! maps menu variables to program variables
@@ -368,7 +368,7 @@ subroutine archon()
       IF (TTERM) CALL TXTOUT(OUNIT, ILEVEL, E1, X1, X2, NLINES)
       IF (TFILE) CALL TXTOUT(TUNIT, ILEVEL, E1, X1, X2, NLINES)
 
-      F1 = F1-PI !guess to begin search for next level
+      F1 = F1 - PI !guess to begin search for next level
    end do
 
    

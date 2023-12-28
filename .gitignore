@@ -39,6 +39,21 @@
 *.gz
 *.tex
 *.bib
+*.dvi
+*.gif
+*.toc
+*.vrb
+*.nav
+*.bcf
+*.xml
+*.snm
+
+# Manim
+*.py
+*.mp4
+*.txt
+*.sty
+*.pyc
 
 #Others
 *.jpeg

@@ -1,4 +1,4 @@
-module math
+module Chap1
    ! NUmerical calculu of the Chapter 1
    implicit none
    real, parameter :: h_bar = 1.
@@ -76,4 +76,4 @@ contains
 
       newton = x
    end function
-end module math
+end module Chap1
