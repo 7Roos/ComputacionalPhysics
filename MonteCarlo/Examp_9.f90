@@ -16,10 +16,9 @@ module Examp_9mod
    integer, parameter :: B = 0      !Campo mag. externo
    integer, parameter :: sweep = 10000  !Varreduras
    real(kind=db), parameter :: delta = 1.d0     !tamanho do passo.
-   real(kind=db), parameter :: T = 4.d0         !temperatura
+   real(kind=db), parameter :: T = 3.d0         !temperatura
    real(kind=db), parameter :: J = 1            !Termo de troca
    real, parameter :: pi = 4*atan(1.)
-
 contains
    subroutine base(S)
       implicit none
@@ -178,7 +177,7 @@ PROGRAM Examp_9
    real(kind=db), dimension(-4:4, -1:1) :: ratio !razão entre o estado exp. e o antigo
    integer :: accept       !Passos aceitos
    real(kind=db) :: mag, U !thermodynamic quantities
-   integer :: ix, iy, pairs
+   character(len=4) :: StrT
    !Carrega a config. inicial.
    call base(S)
 
@@ -190,7 +189,10 @@ PROGRAM Examp_9
 
    accept = 0
 
-   open(unit=20, file=trim(path) // trim(name))
+   write(StrT,'(F4.1)') T
+
+   open(unit=20, file=trim(path) // 'T(' // trim(adjustl(StrT)) &
+   & // ')' //  trim(name))
    do i = 1, sweep
       call metropolis(x, y, S, ratio, accept)
 

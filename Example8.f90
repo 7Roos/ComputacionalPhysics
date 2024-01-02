@@ -348,11 +348,11 @@ subroutine archon()
             call METROP(spin, accept)
 
             ! Include in averages
-            if ( mod(iter, NFREQ) .EQ. 0 ) then
+            if ( mod(iter, NFREQ) == 0 ) then
                !which sweep is it
-               isweep = iter/NFREQ !Garantindo que isweep = 1
+               isweep = iter/NFREQ 
 
-               ! Zero seep averages
+               ! Zero sweep averages
                call zero(sweep, mag, energy, chi, cb)
 
                !sweep totals, add to group

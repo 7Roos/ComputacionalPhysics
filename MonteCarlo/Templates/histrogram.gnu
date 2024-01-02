@@ -1,20 +1,20 @@
 # Configurações gerais
 reset
-#set terminal pngcairo
-#set output 'histogram_pi_error.png'
+set terminal pngcairo
+set output 'histogram.png'
 
 #LaTex
-set terminal lua tikz linewidth 2 standalone
-set output 'histogram.tex' 
+#set terminal lua tikz linewidth 2 standalone
+#set output 'histogram.tex' 
 
 # Configurações do histograma
 set key off
-binwidth = 0.0004  # Largura do bin
+binwidth = 100  # Largura do bin
 bin(x, width) = width*floor(x/width)
 set boxwidth binwidth
 set style fill solid border -1
 set ylabel 'Frequência'
-set xlabel 'Erro na estimativa de $\pi$'
+set xlabel 'N'
 
 #Style(Pallet Collors)
 set style line 1 lc rgb '#181818'
@@ -26,20 +26,23 @@ set style line 6 lc rgb '#BF4F45'
 
 
 # Configuração do xrange
-set xrange [-0.005:0.005]
+#set xrange [-0.01:0.01]
+set xrange [10:1000]
 
-set title "$N = 500k$"
-data = 'Plots/pi_x-y-Erro_N(500k).dat'
+data = 'Plots/histo_equilibrium.dat'
 
 # Número total de pontos
-total_points = 900
+total_points = 1200
 
 # Função Gaussiana
-gaussian(x, mean, sigma) = 1./(sigma*sqrt(2*pi)) * exp(-(x - mean)**2 / (2 * sigma**2))
+#gaussian(x, mean, sigma) = 1./(sigma*sqrt(2*pi)) * exp(-(x - mean)**2 / (2 * sigma**2))
 
 # Ajuste de curva Gaussiana aos dados
-fit gaussian(x, mean, sigma) data using (bin($3, binwidth)):(1.0) via mean, sigma
+#fit gaussian(x, mean, sigma) data using (bin($3, binwidth)):(1.0) via mean, sigma
 
 # Plotagem do histograma
-plot data using (bin($3, binwidth)):(1.0) smooth freq with boxes ls 6, \
-     gaussian(x, mean, sigma/total_points) with lines linestyle 1 lw 2
+plot data using (bin($1, binwidth)):2 smooth freq with boxes ls 6, \
+#plot data using (bin($3, binwidth)):(1.0) smooth freq with boxes ls 6, \
+     #gaussian(x, mean, sigma/total_points) with lines linestyle 1 lw 2, \
+     
+
