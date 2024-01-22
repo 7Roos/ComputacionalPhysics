@@ -1,5 +1,6 @@
-Monte Carlo simulation of the d=2 Ising model
-seed: 987654321
-Lattice(dim):  4
-J: 1.0
-nThermal:  100
+# Monte Carlo simulation of the d=2 Ising model
+# seed: 987654321
+# Lattice(dim):  6
+# J: 1.0
+# nThermal: 1000
+   1.50000   0.81667   0.02364

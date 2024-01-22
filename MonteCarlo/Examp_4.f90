@@ -1,38 +1,41 @@
-! Example 4: Metropolis algorith.
-! Descrição: script do algoritmo Metropolis, podemos adaprá-lo
-!para estimar o valor de pi e comparar com o resultado do
-!exemplo anterior (daí o peso w = exp(1 - x**2 - y**2)).
-! O peso w vai depender da natureza do problema.
+! Examp_4: Evolution of the error in estimating the value of pi
+! Descrição: Modificamos o exemplo 3 para avaliar a evolução do
+!erro nao estimar pi, esse valor deve tender para  1/\sqrt{\pi}
 
 ! Criado por: Matheus Roos
-!(adaptado do livro do Steven R. Koonin)
-! Data: 25/12/2023
+! Data: 06/01/2024
 
-module Ex4
+PROGRAM Examp_4
    implicit none
-   integer :: seed = 39249187
-contains
-   real function weight(x, y)
-      implicit none
-      real, intent(in) :: x, y
-      weight = exp(1 - x**2 - y**2)
-   end function
+   character(len=22), parameter :: name = './Plots/pi_N-error.dat'
+   real, parameter :: exact = 4*atan(1.)
+   integer :: seed = 3274927
+   integer :: ix, N, iter
+   integer :: icount
+   real :: x, y, pi4, error
 
-   subroutine metropolis(x, y, delta)
-      implicit none
-      real :: x, y, delta
-      !local variables:
-      real :: new_x, new_y, ratio
+   N = 10**9
+   icount = 0
+   iter = 1
 
-      !take a trial step in square about (x,y)
-      new_x = x + delta*(2*ran(seed) - 1)
-      new_y = y + delta*(2*ran(seed) - 1)
+   open(unit = 20, file = name)
 
-      ratio = weight(new_x, new_y) / weight(x, y)
+   do ix = 1, N
+      x = ran(seed)
+      y = ran(seed)
 
-      if ( ratio > ran(seed) ) then
-         x = new_x
-         y = new_y
+      if ( (x**2 + y**2 <= 1.)) icount = icount + 1
+
+      if ( mod(ix, 10**iter) == 0 ) then
+         pi4 = 4*real(icount)/ix
+         error = pi4 - exact
+
+         write(20,*) ix, error
+
+         write(*,*) 'Trocar iter?', N, iter, ix
+         read(*,*) iter
       end if
-   end subroutine
-end module Ex4
+   end do
+
+   close(20)
+END PROGRAM Examp_4

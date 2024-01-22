@@ -1,59 +1,38 @@
-! Example 6: Random walk 1-D
-! Descrição: O segundo passo em simulações de Monte Carlo
-!é definir o caminhante aleatório. Que pode dar passinhos da vovó
-!passos curtos, como de um em um, ou grandes passos, saltando para
-!uma posição aleatória da rede.
-
-! Vamos antes considerar o caso unidimensinal, e ao impor as
-!condições periódicas de contorno (o caminhante não pode ir pro infinito)
-!definimos o caminho por um círculo fechado por onde nosso caminhante
-!andará.
+! Example 6: Metropolis algorith.
+! Descrição: script do algoritmo Metropolis, podemos adaprá-lo
+!para estimar o valor de pi e comparar com o resultado do
+!exemplo anterior (daí o peso w = exp(1 - x**2 - y**2)).
+! O peso w vai depender da natureza do problema.
 
 ! Criado por: Matheus Roos
+!(adaptado do livro do Steven R. Koonin)
 ! Data: 25/12/2023
 
-PROGRAM Examp_6
+module Ex6
    implicit none
-   integer, parameter :: db = 8
-   integer, parameter :: n = 4
-   integer :: seed = 987654321
-   real(kind=db) :: r       !random number
-   real(kind=db) :: sweep   !sorteio/varredura do próximo passo
-   real(kind=db) :: delta   !tamanho do passo.
-   integer :: x             !posição
-   integer :: step          !próximo passo do caminhante
+   integer :: seed = 39249187
+contains
+   real function weight(x, y)
+      implicit none
+      real, intent(in) :: x, y
+      weight = exp(1 - x**2 - y**2)
+   end function
 
-   delta = 1
+   subroutine metropolis(x, y, delta)
+      implicit none
+      real :: x, y, delta
+      !local variables:
+      real :: new_x, new_y, ratio
 
-   !Iniciamos a caminhada: sorteamos uma fração do espaço disponível 0 < x < n.
-   do  
-      x = int(N*ran(seed))
-      if (x > 0) exit !não pode ser nulo
-   end do
-   print *, x
+      !take a trial step in square about (x,y)
+      new_x = x + delta*(2*ran(seed) - 1)
+      new_y = y + delta*(2*ran(seed) - 1)
 
-   do
-      !sorteamos um número 0 < r < 1
-      r = ran(seed)
-      sweep = (2*r - 1)
+      ratio = weight(new_x, new_y) / weight(x, y)
 
-      !Normalizamos para o tamanho do passo e pegamos a direção do passo
-      step = int(sign(delta, sweep))
-
-      x = x + step
-
-      !Condições periódicas de contorno.
-      if ( x >  n ) then
-         !passou da borda superior, deve retornar pro início
-         x = x - n
+      if ( ratio > ran(seed) ) then
+         x = new_x
+         y = new_y
       end if
-      if (x < 1 ) then
-         !passou da borda inferior.
-         x = x + n
-      end if
-
-      print *, x
-
-      read(*,*)
-   end do
-END PROGRAM Examp_6
+   end subroutine
+end module Ex6

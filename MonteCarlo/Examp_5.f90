@@ -1,75 +1,53 @@
-! Example 5: Create base spin (table).
-! Descrição: A primeira etapa do método de Monte Carlo (MC)
-!é gerar as configurações de n spins de forma aleatória  e
-!uniformemente distribuída.
-! Geramos um número aleatóio r, se r> o.5, então a variável de spin S>0, caso contrário
-!S<0. No final criamos um plot dessa tabela.
+! Example 5: integration 2-D via Monte Carlo.
+! Descrição: Neste exemplo de integral de Monte Carlo 2D
+!estimamos o valor de pi ao calcular a área de um semi-círculo.
 
 ! Criado por: Matheus Roos
+!(adaptado do livro do Steven R. Koonin)
 ! Data: 25/12/2023
 
-PROGRAM Examp_5
+program Ex5
    implicit none
-   integer, parameter :: N = 20 !Size lattice
-   character(len=8), parameter :: path = './Plots/'
-   character(len=10), parameter :: name = 'Base.dat'
-   character(len=1) :: visual, source
-   integer :: seed = 987654321
-   integer :: Nx, Ny !indices horizontal and vertical lattice
-   integer, dimension(N,N) :: S = 1 !spin variable
-   real :: r !storage random number
+   character(len=22), parameter :: name = './Plots/pi/pi_x-y-Erro'
+   real, parameter :: exact = 4*atan(1.)
+   integer :: seed = 3274927 !seed for random number generator
+   integer :: n, icount, ix
+   real :: x, y, pi4, sigma
+   character(len=5) :: StrN
 
-   do Nx = 1, N
-      do Ny = 1, N
-         r = ran(seed)
-         if ( r < 0.5 ) S(Nx, Ny) = -1
-      end do
-   end do
 
-   write(*,*) 'Base gerada. Deseja visualizar?[s/n]'
-   read(*,*) visual
-   if ( visual == 's' .OR. visual == 'S' ) then
-      write(*,*) 'Ver no terminal ou no gráfico?[t/g]'
-      read(*,*) source
-      if ( source == 't') then
-         call print_matrix(N, S)
-      else
-         call graph()
-         write(*,*) 'Salvo como "Base.png"'
-      end if
-   end if
+   do
+      print *, 'Enter number of points (0 to stop)'
+      read *, n
+      if ( n == 0 ) stop
 
-contains
-   subroutine print_matrix(dim, A)
-      implicit none
-      ! I/O variables:
-      integer, intent(in) :: dim
-      integer, dimension(dim, dim), intent(in) :: A
-      ! Local variables:
-      integer :: i,j
-      do i = 1, dim
-         write(*,10) (A(i,j), j=1, dim)
-      end do
-10    format (20(I2))
-   end subroutine
+      write(StrN, '(I5)') n
+      open(unit = 20, file=trim(name) // '_N(' // trim(adjustl(StrN)) // ').dat')
 
-   subroutine graph()
-      implicit none
-      integer :: i,j
+      icount = 0          !zero count
 
-      call system('mkdir -p ' // trim(path))
+      do ix = 1, n        !loop over samples
+         x = ran(seed)
+         y = ran(seed)
 
-      open(unit=20, file=trim(path) // trim(name))
+         ! Se o valor satisfizer a condição imposta de validade,
+         !aceitamos o sorteio como verdadeiro.
+         ! Se não houvesse essa restrição, estaríamos calculando a área de um quadrado unitário,
+         ! assim restringimos que ele esteja dentro do arco do semicírculo.
+         if ( (x**2 + y**2) <= 1. ) icount = icount + 1
 
-      do i = 1, N
-         write(20,11) (S(i,j), j=1, N)
+         if ( mod(ix, 100) == 0 ) then
+            !A cada 100 valores calcula a média
+            pi4 = real(icount)/ix            !pi/4
+            write(20,*) x, y, exact - 4*pi4
+         end if
       end do
 
-11    format (20(I3))
       close(20)
 
-      call system('gnuplot -p Templates/Base.gnu')
-   end subroutine
-END PROGRAM Examp_5
+      pi4 = real(icount)/n            !pi/4
+      sigma = sqrt(pi4*(1 - pi4)/n)   !error
 
-
+      print *, 'pi = ', 4*pi4, '+/-', 4*sigma, 'error = ', abs(exact - 4*pi4)
+   end do
+end program Ex5
