@@ -70,8 +70,8 @@ contains
       !spin (coluna).
 
       ! Fazer esta soma antecipadamente para cada valor de temperatura
-      !é de suma importância, pois este �� um grande gargalo na performance
-      !nas simulções de Monte Carlo, os cálculos das exponenciais da função peso.
+      !é de suma importância, pois este é um grande gargalo na performance
+      !nas simulções de Monte Carlo; o cálculo das exponenciais da função peso.
       do i = -4, 4, 2
          ratio(i, -1) = exp(2*beta*(J*i + B))    !Spin down
          ratio(i, +1) = 1.d0 / ratio(i, -1)      !Spin up

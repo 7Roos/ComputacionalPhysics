@@ -1,0 +1,12 @@
+# Monte Carlo simulation of the d=2 Ising model
+# seed: 987654321
+# L:  30; nBins: 10
+# J: 1.0 (ferro)
+# nThermal: 9000
+# Cols: T-mag-deltaMag
+
+   0.10000   0.20000   0.30984
+   0.20000   1.00000   0.00000
+   0.50000   0.90000   0.13784
+   0.60000   0.50000   0.27386
+   0.70000   0.20000   0.30984
