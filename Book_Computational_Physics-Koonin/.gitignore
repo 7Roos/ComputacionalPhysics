@@ -31,37 +31,32 @@
 *.out
 *.app
 
-# Images and data
-*.dat
-
-#Latex
+# Latex
 *.aux
-*.log
-*.gz
-*.dvi
-*.cls
 *.bbl
 *.blg
+*.log
+*.gz
+*.tex
+*.bib
+*.dvi
+*.gif
 *.toc
+*.vrb
+*.nav
+*.bcf
+*.xml
+*.snm
 
-# Ifort and VTune
-*.i90
-*.bad
-*.dataLim
-*.vtune 
-*.cfg
-*.options
-*.sc 
-
-
-# Python
-*.pyc
+# Manim
+*.py
 *.mp4
-*.json
-.*html
-.*txt
+*.txt
+*.sty
+*.pyc
 
-# Folders
-#MonteCarlo/Doc/Manim/media/Tex/
+#Others
+*.jpeg
+*.png
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Fortran
