@@ -63,5 +63,7 @@
 
 # Folders
 #MonteCarlo/Doc/Manim/media/Tex/
+media
+tex
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Fortran
