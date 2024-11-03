@@ -1,0 +1,46 @@
+\documentclass[tikz, border=1mm]{standalone}
+
+%Packages
+\usepackage{xcolor} %Advanced colors
+\usetikzlibrary{calc} %para calculos da grade
+\usetikzlibrary{angles,quotes} %Para calcular seno e cosseno
+%\usepackage{tikz-3dplot} %Enable 3d plot
+\usepackage{pgfmath} % Advanced calculus
+\usetikzlibrary{math}
+
+%Pallet colors
+\definecolor{spinUP}{HTML}{181818}
+\colorlet{spinDOWN}{white}
+%\definecolor{spinDOWN}{HTML}{F5F5F5}
+\definecolor{cluster}{HTML}{F2D57E}
+\definecolor{j1}{HTML}{D72C01}
+\definecolor{j2}{HTML}{F3ECD1}
+\definecolor{j3}{HTML}{A72504}
+\definecolor{j4}{HTML}{00746E}
+
+%Parameters
+%size lattice
+\newcommand{\Lx}{3} %Size lattice
+\newcommand{\Ly}{3}
+\newcommand{\LL}{3} %if Lx = Ly
+\newcommand{\lw}{0.01cm} %line width
+\pgfmathsetmacro\rebarba{0.005} %lw/2
+
+
+
+%Faça este valor sempre=\nSitios-1 
+\newcommand{\sizeCircle}{12pt}
+\newcommand{\sizeFont}{\LARGE}
+\newcommand{\translate}{-2}
+\newcommand{\translateY}{3.2}
+\newcommand{\translateLegend}{0.}
+\newcommand{\translateCLUSTERS}{3}
+\newcommand{\translateFigb}{-2.96,-1.7}
+\newcommand{\translateFigc}{-0.66,-0.5}
+\newcommand{\factorSizeLattice}{0.6}
+% Calcula a divisão de \nSitios por 2, e trunca num inteiro
+\pgfmathtruncatemacro{\nClusters}{\Lx/2}
+
+\begin{document}
+	\include{grid}
+\end{document}

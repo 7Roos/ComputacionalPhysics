@@ -1,0 +1,21 @@
+\begin{tikzpicture}
+	\foreach \i in {0,1,...,\LL}{
+		\draw[j1] (\i,0) -- (\i, \LL);
+		\draw[j1] (0,\i) -- (\LL, \i);
+	}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+	\draw[j1, step=1cm] (0,0) grid (\LL, \LL);
+\end{tikzpicture}
+
+\begin{tikzpicture}
+	\pgfmathsetmacro{\halflinewidth}{\lw}
+	\foreach \i in {0,1,...,\LL}{
+		\draw[j1, line width=\lw] (\i,0) -- (\i, \LL);
+		\draw[j3, line width=\lw] (0 - \lw/2,\i) -- (\LL + \rebarba, \i);
+	}
+
+\end{tikzpicture}
+
+

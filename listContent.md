@@ -21,17 +21,18 @@ Vou trabalhar com diferentes séries e ir alternando para ver o que é mais 'luc
    -"..." três partículas 1D: AF
    -Força elétrica entre três partículas 2D: triângulo equilátero
    -Força elétrica entre 4 partículas 2D: quadrado
-**4. Física computacional:**
-   -Implementação em Fortran plot error com gnuplot
+4. Física computacional:
+   -Implementação derivada em Fortran plot error com gnuplot
    -Implementação Python e plot com matplotilib
    -Implementação Julia e plot
-5. Tikz-Latex: loop em uma rede quadrada
+**5. Tikz-Latex: loop em uma rede quadrada**
    -Adição de spins com brilho e paleta de cores
    -Alternância de cores AF: if
    -Plano com transparência
    -3D rede quadrada
    -3D e 2D com scope
-6. Manim: fluxograma: simples
+6. Manim: cores
+   -fluxograma simples
    -numeração de eq
    -numeração de fig
    -referência
