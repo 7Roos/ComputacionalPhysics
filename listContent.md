@@ -1,6 +1,7 @@
 Vou trabalhar com diferentes séries e ir alternando para ver o que é mais 'lucrativo'.
 
-1. ShortTips: UpperCase()
+**1. ShortTips: OneAPI**
+   -UpperCase()
    -Snipets
 2. Gnuplot: Op. Lógico
    -Estilizando linha: lc, paleta de cores, lw, dt, ls
@@ -14,6 +15,15 @@ Vou trabalhar com diferentes séries e ir alternando para ver o que é mais 'luc
    -MapHeat
    -3D
    -3d: poligon
+   -Refinando dados: smooth (sbezier, csplines, slinear) suaviza a curva, unique (remove pontos duplicados)
+   -Diagrama de fases
+   -Animações
+   -Integração com python:
+      import Gnuplot
+      g = Gnuplot.Gnuplot()
+      g('set title "Exemplo de plot com Python"')
+      g.plot('sin(x)')
+   -Estudar Plotly, Geogebra ou Bokeh (gráficos interativos)
 3. Física 3: Coord. Cartesianas
    -Força elétrica entre duas partículas 1D
    -Força elétrica entre duas partículas 2D
@@ -25,17 +35,30 @@ Vou trabalhar com diferentes séries e ir alternando para ver o que é mais 'luc
    -Implementação derivada em Fortran plot error com gnuplot
    -Implementação Python e plot com matplotilib
    -Implementação Julia e plot
-**5. Tikz-Latex: loop em uma rede quadrada**
-   -Adição de spins com brilho e paleta de cores
+5. Tikz-Latex:
+   -Tikzset: redefinir o estilo padrão
    -Alternância de cores AF: if
+   -Legenda: positioning
    -Plano com transparência
    -3D rede quadrada
    -3D e 2D com scope
+   -Conversão de pdf para outros formatos
+   -O que é Tikz
+   -3D hexagonal
+   -Plots: pgfplots
+   -shapes.geometric (myCircle)
+   -Fluxograma
+   -Diagramas de Circuitos
+   -tikz-cd: diagrama de cargas elétricas
+   -mapa mental
+   -clone Halliday
 6. Manim: cores
-   -fluxograma simples
    -numeração de eq
    -numeração de fig
    -referência
-7. build: makefile: começar do trivial, obj, S=, flags, clean
+   -fluxograma simples
+7. build:
+   -Lapack
+   -makefile: começar do trivial, obj, S=, flags, clean
    -meson: alternativa
    -doxygen

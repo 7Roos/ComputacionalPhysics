@@ -61,6 +61,9 @@
 .*html
 .*txt
 
+# Audio
+*.wav
+
 # Folders
 #MonteCarlo/Doc/Manim/media/Tex/
 media

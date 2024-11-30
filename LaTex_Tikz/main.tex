@@ -1,0 +1,30 @@
+\documentclass[tikz, border=1mm]{standalone}
+
+%Packages
+\usepackage{xcolor} %Advanced colors
+\usepackage{pgfmath} % Advanced calculus
+
+%Pallet colors
+\definecolor{spinUP}{HTML}{181818}
+\colorlet{spinDOWN}{white}
+\definecolor{j1}{HTML}{535FA6}
+\definecolor{j2}{HTML}{247373}
+\definecolor{j3}{HTML}{F2A74B}
+\definecolor{j4}{HTML}{A63B32}
+
+%Parameters
+%size lattice
+\newcommand{\Lx}{3} %horizontal
+\newcommand{\Ly}{3} %vertical
+\newcommand{\LL}{3} %square
+\newcommand{\lw}{1} %line width
+\newcommand{\ptTOcm}{1./28.45274} %convert pt to cm
+\pgfmathsetmacro{\burr}{0.5*\lw*\ptTOcm}
+
+%Spins(circles)
+\newcommand{\sizeCircle}{0.15}
+\newcommand{\povGlow}{280}
+
+\begin{document}
+	\include{grid}
+\end{document}

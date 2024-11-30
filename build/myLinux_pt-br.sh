@@ -1,75 +1,77 @@
 #!/bin/bash
 
-# Automated installer for Ubuntu, Fedora and Arch Linux distributions. 
-# There are many packages and configurations, and it is bad to keep remembering to install and configure one by one. 
-# So a viable alternative was to create (with the help of AI) this program.
+# Instalador automatizado de pacotes científicos para distribuição Linux Ubuntu e Fedora.
+# Há muito pacotes e configurações, e é ruim ficar lembrando de instalar e configurar um por um.
+# Então uma alternativa viável foi criar (com o auxílio de IA) este programa.
 #
 # Matheus Roos, 28/06/2024
-# Last updated, 27/11/2024
+# Last updated, 01/11/2024
 
 ##########################################
-####### Definition of packages ###########
+####### Definição dos pacotes ############
 ##########################################
 build_packs=("nano" "curl" "git" "pip" "pipx")
-#nano: text editor
-#curl: packages manager
-#git: code versioning
-#python3-pip: pip - python package manager
+#nano: editor de texto
+#curl: gerenciador de pacotes
+#git: versionamento de código
+#python3-pip: pip gerenciador de pacotes python
 #pipx:
 
 midia_packs=("inkscape" "gimp" "rsvg-convert" "obs-studio" "spotify" "brave")
-#inkscape: vector drawing
-#gimp: images editor
-#rsvg-convert: convertor svg -> eps
+#inkscape: desenho vetorial
+#gimp: editor de imagens
+#rsvg-convert: conversor svg -> eps
 #obs: obs studio
 #spotify: spotify
-#brave: browser
+#brave: navegador
 
 scientific_packs=("gfortran" "texlive" "gnuplot" "texstudio" "fortls" "conda" "lapack" "code")
-#gfortran: compile fortran
-#texlive: compile LaTex
-#gnuplot: graph editor
-#texstudio: LaTex editor 
-#fortls: linter for fortran
-#conda: python packages and virtual enviroment
-#lapack: linear algebra lib
-#code: vs code - code editor
+#gfortran: compilador fortran
+#texlive: compilador LaTEX
+#gnuplot: editor de gráfico
+#texstudio: editor LaTex
+#fortls: linter parar fortran
+#conda: pacotes python e ambiente virtual
+#lapack: bibliotecas de álgebra linear
+#code: vs code editor de código
 
 manim_packs=("manim" "manim-slides")
 #cairo, pango, ffmpeg: dep from manim
-#manim: python library mathematical animation
-#manim-slides: (dep manim) to generate slides
+#manim: biblioteca python de animação matemática
+#manim-slides: usa manim para gerar slides
 
 terminal_packs=("zsh" "fonts-powerline" "Zsh-syntax-highlighting" "Zsh-autosuggestions" "FZF" "Plugin K")
-#zsh: alternative terminal to shell
-#fonts-powerline": special fonts
-#Zsh-syntax-highlighting: analyzer syntax
-#Zsh-autosuggestions: auto-sugest
-#FZF e Plugin K: plugins
+#zsh: terminal alternativo ao shell
+#fonts-powerline": fontes especiais
+#Zsh-syntax-highlighting: analisador de sintaxe
+#Zsh-autosuggestions: auto-sugestão
+#FZF e Plugin K:plugins
 
 function welcome {
-  # Welcome function
-  echo "************************************************"
-  echo "** Welcome to the Custom Installation Wizard! **"
-  echo "************************************************"
+  # Função de boas-vindas
+  echo "**********************************************************"
+  echo "** Bem-vindo ao Assistente de Instalação Personalizada! **"
+  echo "**********************************************************"
 }
 
 function choose_distro {
-  #### Linux distribution choice - package manager #######
+  #### Escolha da distribuição Linux - gerenciador de pacotes #######
 
-  #The installation commands can change between distributions, i.e., #between package managers, which are three, matching to the Debian, # RHEL and Arch derivations.
+  # Os comando de instalação podem mudar entre as distribuições,
+  # i.e., entre gerenciadores de pacotes, que são três, correspondentes
+  # às derivações debian, rhel e arch.
   echo ""
-  echo "Select the manager packs:"
+  echo "Selecione o gerenciador de pacotes:"
   echo "1) apt"
   echo "2) dnf"
   echo "3) pacman"
   echo ""
-  #-n 1 ensures that the user only enters one character and then automatically 'gives a enter'
+  #-n 1 garante que o usuário digite apenas um caracter e após isso 'dá um enter' automaticamente
   read -n 1 distro
 
   # Validação da resposta
   while [[ ! $distro =~ ^[123]$ ]]; do
-    echo "** Invalid option! Type 1 for apt, 2 for dnf or 3 for pacman: **"
+    echo "** Opção inválida! Digite 1 para apt, 2 para dnf ou 3 para pacman: **"
     read -n 1 distro
   done
 
@@ -84,18 +86,18 @@ function choose_distro {
     distro="arch"
     prefix="pacman"
   fi
-  echo ". Manager packages: $prefix"
+  echo ". Gerenciador de pacotes: $prefix"
 
-  # Clears the log file before starting
+  # Limpa o arquivo de log antes de iniciar
   >install.log
 
-  # Log file record
-  echo "Manager packages: $prefix" >>install.log
+  # Regsitro no arquivo de log
+  echo "Gerenciador de pacotes: $prefix" >>install.log
   echo "" >>install.log
 }
 
 function update_system {
-  ######### Packages update: ########
+  ######### Atualização de pacotes: ########
   if [[ $prefix == "apt" ]]; then
     sudo $prefix update
     sudo apt -y upgrade && sudo apt -y autoremove
@@ -103,71 +105,71 @@ function update_system {
     sudo $prefix -y update
   elif [[ $prefix == "pacman" ]]; then
     sudo $prefix -Syu --noconfirm
-    # There is no automatic package remover, you should analyze case by case.
+    # Não há removedor de pacotes automático, você deve analisar caso a caso.
   fi
 
   ##################################
-  #### Installing packages ######
+  #### Instalação dos pacotes ######
   ##################################
 
   echo ""
   echo "**********************"
-  echo "Update completed!"
+  echo "Atualização concluída!"
   echo "**********************"
 }
 
 color_print() {
-  # $1: Text to be printed
-  # $2: Color (optional)
-  # $3: Style (optional)
+  # $1: Texto a ser impresso
+  # $2: Cor (opcional)
+  # $3: Estilo (opcional)
 
-  ### Dictionarie:
-  ## Colors (Codes ANSI):
-  #30: Black
-  #31: Red
-  #32: Green
-  #33: Yellow
-  #34: Blue
+  ### Dicionário:
+  ## Cores (Códigos ANSI):
+  #30: Preto
+  #31: Vermelho
+  #32: Verde
+  #33: Amarelo
+  #34: Azul
   #35: Magenta
-  #36: Cyan
-  #37: white
-  ## Styles:
-  #1: Bold
-  #4: Undescore
-  #7: Inverted
+  #36: Ciano
+  #37: Branco
+  ## Estilos:
+  #1: Negrito
+  #4: Sublinhado
+  #7: Invertido
 
-  color=${2:-32}m # Green color by default
-  style=${3:-0}   # Normal style by default
+  color=${2:-32}m # Cor verde por padrão
+  style=${3:-0}   # Estilo normal por padrão
   echo -e "\e[$style;$color$1\e[0m"
 }
 
 print_packages() {
-  # Iterates through the list printing the name of each package
+  # Percorre a lista imprimindo o nome de cada pacote
 
   echo ""
-  echo "These packages will be installed"
+  echo "Esses pacotes serão instalados"
 
   for pack in "${@}"; do
     color_print "$pack"
   done
   echo ""
 
-  # Pause execution for 2 seconds
+  # Pausar a execução por 5 segundos
   sleep 2
 }
 
 function check_installation {
-  # It's not working perfectly, it needs adjustments!
-  # It is not capturing installation errors and programs already 
-  # installed with different name, e.g., texlive and pdflatex
-  # $1: Program name
+  # Não está funcionando perfeitamente, precisa de ajustes!
+  # Não está capturando erros de instalação e programas já instalados
+  #com nome diferente, e.g., texlive e pdflatex
+  # $1: Nome do programa
   local program="$1"
 
   if [ $? -ne 0 ]; then
-    color_print "Error installing $program" 31
-    echo "Error installing $program" >>install.log
+    color_print "Erro ao instalar $program" 31
+    echo "Erro ao instalar $program" >>install.log
   else
-    echo "$program installed" >>install.log
+    echo "$program instalado" >>install.log
   fi
 }
 
@@ -177,18 +179,18 @@ suscess_install() {
   echo $1
   color_print "**********************" 33
   echo ""
-  echo "Let's continue!"
+  echo "Vamos prosseguir!"
 }
 
 welcome
 
 ######################
-## Part 1: Definition
+## Parte 1: Definição
 ######################
 choose_distro
 
 ######################
-## Part 2: Update
+## Parte 2: Atualização
 ######################
 update_system
 
@@ -197,11 +199,11 @@ echo "build_packs:" >>install.log
 echo "" >>install.log
 
 ######################
-## Parte 3: Installing
+## Parte 3: instalação
 ######################
 # Essentials
 for program in "${build_packs[@]}"; do
-  # Check if the program is already installed
+  # Verifica se o programa já está instalado
   if ! command -v $program &>/dev/null; then
     if [[ $prefix == "apt" ]]; then
       if [[ $program == "pip" ]]; then
@@ -234,11 +236,11 @@ for program in "${build_packs[@]}"; do
       pipx ensurepath
     fi
   else
-    echo "$program was already installed" >>install.log
+    echo "$program já estava instalado" >>install.log
   fi
 done
 
-suscess_install "Essential packages installed"
+suscess_install "Pacotes essenciais instalados"
 print_packages "${midia_packs[@]}"
 echo "" >>install.log
 echo "midia_packs:" >>install.log
@@ -246,7 +248,7 @@ echo "" >>install.log
 
 # Midia
 for program in "${midia_packs[@]}"; do
-  # Check if the program is already installed
+  # Verifica se o programa já está instalado
   if ! command -v $program &>/dev/null; then
     if [[ $prefix == "apt" ]]; then
       if [[ $program == "rsvg-convert" ]]; then
@@ -291,17 +293,18 @@ for program in "${midia_packs[@]}"; do
 
     check_installation "$program"
   else
-    echo "$program was already installed" >>install.log
+    echo "$program já estava instalado" >>install.log
   fi
 done
 
-suscess_install "Installed media packages"
+suscess_install "Pacotes de midia instalados"
 print_packages "${scientific_packs[@]}"
 echo "" >>install.log
 echo "scientific_packs:" >>install.log
 echo "" >>install.log
 
 for program in "${scientific_packs[@]}"; do
+  # Verifica se o programa já está instalado
   if ! command -v $program &>/dev/null; then
     if [[ $prefix == "apt" ]]; then
       if [[ $program == "texlive" ]]; then
@@ -381,17 +384,18 @@ for program in "${scientific_packs[@]}"; do
     fi
     check_installation "$program"
   else
-    echo "$program was already installed" >>install.log
+    echo "$program já estava instalado" >>install.log
   fi
 done
 
-suscess_install "Scientific packages installed"
+suscess_install "Pacotes científicos instalados"
 print_packages "${manim_packs[@]}"
 echo "" >>install.log
 echo "manim_packs:" >>install.log
 echo "" >>install.log
 
 for program in "${midia_packs[@]}"; do
+  # Verifica se o programa já está instalado
   if ! command -v $program &>/dev/null; then
     if [[ $prefix == "apt" ]]; then
       if [[ $program == "manim" ]]; then
@@ -418,17 +422,18 @@ for program in "${midia_packs[@]}"; do
       fi
     fi
   else
-    echo "$program was already installed" >>install.log
+    echo "$program já estava instalado" >>install.log
   fi
 done
 
-suscess_install "Manim packages installed"
+suscess_install "Pacotes manim instalados"
 print_packages "${terminal_packs[@]}"
 echo "" >>install.log
 echo "terminal_packs:" >>install.log
 echo "" >>install.log
 
 for program in "${terminal_packs[@]}"; do
+  # Verifica se o programa já está instalado
   if ! command -v $program &>/dev/null; then
     if [[ $prefix == "apt" ]]; then
       if [[ $program == "Zsh-syntax-highlighting" ]]; then
@@ -473,39 +478,54 @@ for program in "${terminal_packs[@]}"; do
       fi
     fi
   else
-    echo "$program was already installed" >>install.log
+    echo "$program já estava instalado" >>install.log
   fi
 done
 
 ######################
-## Part 4: Settings
+## Parte 4: configuração
 ######################
 echo ""
 echo "**********************"
-echo "Setting Git? [y/n]"
+echo "Configurar Git? [y/n]"
 echo "**********************"
 read -n 1 git
 if [[ $git == "y" ]]; then
-  echo "What is the username?"
+  echo "Qual é o nome de usuário?"
   read user
   git config --global user.name "$user"
-  echo "What is the email?"
+  echo "Qual é o e-mail?"
   read email
   git config --global user.email $email
 
-  # Set VSCode as default editor
+  #Configuramos o VS Code como editor padrão
   git config --global core.editor 'code --wait'
 
-  # Configuration verification
+  #Verificação de configuração
   git config --list
 fi
 
-# Extra facilities
+# Instalações extras
 
-# Installation commands for different package managers: https://command-not-found.com/
+#ADICIONAR MAIS PACOTES A PARTIR DAQUI
 
-# Maybe in the future to implement an interactive menu
-# Create a dialog box with two options
-#choice=$(whiptail --title "Choose an optiono" --menu "What do you want to do??" 10 30 2 \
-#  "Install packages" "1" \
-#  "Update the system" "2" 3>&1 1>&2 2>&3)
+# Percorrer a lista e verificar cada programa
+#for id_packs in $programas; do
+#  if which $programa >/dev/null; then
+#    echo "$programa instalado com sucesso!"
+#  else
+#    echo "Erro: Falha na instalação do $programa."
+#  fi
+#done
+# which verifica se um comando ou programa específico está instalado e
+#retorna o caminho do arquivo executável
+# >/dev/null redireciona a saída do comando which para o dispositivo nulo,
+#isso quer dizer que a saída do comando não será exibida na tela.
+
+# Font para muitos dos comandos: https://command-not-found.com/
+
+#Talvez no futuro implementar um menu iterativo
+# Cria uma caixa de diálogo com duas opções
+#choice=$(whiptail --title "Escolha uma opção" --menu "O que você deseja fazer?" 10 30 2 \
+#  "Instalar pacotes" "1" \
+#  "Atualizar o sistema" "2" 3>&1 1>&2 2>&3)
