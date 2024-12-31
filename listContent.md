@@ -1,6 +1,6 @@
 Vou trabalhar com diferentes séries e ir alternando para ver o que é mais 'lucrativo'.
 
-**1. ShortTips: OneAPI**
+**1. ShortTips: OneAPI**: traduzir para o inglês
    -UpperCase()
    -Snipets
 2. Gnuplot: Op. Lógico
