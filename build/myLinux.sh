@@ -20,7 +20,7 @@ build_packs=("nano" "curl" "git" "pip" "pipx")
 midia_packs=("inkscape" "gimp" "rsvg-convert" "obs-studio" "spotify" "brave")
 #inkscape: vector drawing
 #gimp: images editor
-#rsvg-convert: convertor svg -> eps
+#rsvg-convert: convertor svgtudio -> eps
 #obs: obs studio
 #spotify: spotify
 #brave: browser

@@ -1,45 +1,7 @@
-%%%%%%%%%%%
-% Loop and grid 
-% M. Roos, 10/11/2024
-%%%%%%%%%%%
-
-% Square lattice (Lx = Ly = LL) - 1 loop above vertical and horizontal lines
-\begin{tikzpicture}
-	\foreach \i in {0,1,...,\LL}{
-		\draw[j1] (\i,0) -- (\i, \LL); %horizontal
-		\draw[j1] (0,\i) -- (\LL, \i); %vertical
-	}
-\end{tikzpicture}
-
-% Within loop, use grid, since (x0, y0) at (Lx, Ly)
-\begin{tikzpicture}
-	\draw[j3, step=1cm] (0,0) grid (\LL, \LL);
-\end{tikzpicture}
-
-% Resolve burr
-\begin{tikzpicture}
-	\node at (0.5,0.4) {1cm = 28.45274pt};
-	\draw[j4, line width=\lw] (0,0) -- (1,0);
-	\draw[red, line width=\lw] (0.5,0 -\burr ) -- (0.5, \burr);
-\end{tikzpicture}
-
-% Grid within burr
-\begin{tikzpicture}
-	\foreach \i in {0,1,...,\LL}{
-		\draw[j4, line width=\lw] (\i,0) -- (\i, \LL);
-		\draw[j4, line width=\lw] (0 - \burr,\i) -- (\LL + \burr, \i);
-	}
-\end{tikzpicture}
-
-% Grid with spins (circles)
-\begin{tikzpicture}
-	\draw[j1, step=1cm, line width=1] (0,0) grid (\LL, \LL);
-	\foreach \j in {0,1,...,\LL}{
-		\foreach \i in {0,1,...,\LL}{
-			\fill[j4] (\i,\j) circle(\sizeCircle) ; 
-		}
-	}
-\end{tikzpicture}
+%%%%%%%%%%%%%%%%%
+%%  Styles							  %%
+%%  M. Roos, 25/03/2025	 %%
+%%%%%%%%%%%%%%%%%
 
 % Circles with shadow and glow
 \begin{tikzpicture}
@@ -47,6 +9,54 @@
 	\foreach \j in {0,1,...,\LL}{
 		\foreach \i in {0,1,...,\LL}{
 			\fill[ball color=j4, shading angle=\povGlow] (\i,\j) circle(\sizeCircle) ; 
+			}
+		}
+	\node at (1.5,3.3) {\tiny Circles with shadow and glow};
+\end{tikzpicture}
+
+% Help lines style
+\begin{tikzpicture}
+	\draw[help lines] (0,0) grid (3,3);
+	\node at (1.5,3.3) {\tiny Help lines style};
+\end{tikzpicture}
+
+% Help lines style: add style
+\begin{tikzpicture}
+	\tikzstyle{help lines}+=[dashed]
+	\draw[help lines] (0,0) grid (3,3);
+	\node at (1.5,3.3) {\tiny Add style};
+\end{tikzpicture}
+
+% Round extreme
+\begin{tikzpicture}
+	\draw[line width=1, line cap=round] (0,0) grid (3,3);
+	\node at (1.5,3.3) {\tiny Round extreme};
+\end{tikzpicture}
+
+% MyStyle
+\begin{tikzpicture}
+	[myStyle/.style={draw=red, line width=1, line cap=round}]
+	\draw[myStyle] (0,0) grid (3,3);
+	\node at (1.5,3.3) {\tiny My style};
+\end{tikzpicture}
+
+% Create my personal style with condition
+\begin{tikzpicture}
+	[myStyle/.style ={help lines,color=#1!50},
+	myStyle/.default=blue]
+	\draw[myStyle] (0,0) grid (2,2);
+	\draw[myStyle=red, xshift=1] (2,0) grid (4,2);
+	\node at (2,2.5) {\tiny Condition style};
+\end{tikzpicture}
+
+% My style for grid and spins with node
+\begin{tikzpicture}
+	\draw[myGrid] (0,0) grid (\LL, \LL);
+	\foreach \j in {0,1,...,\LL}{
+		\foreach \i in {0,1,...,\LL}{
+			\node[mySpin] at (\i,\j) {} ; 
 		}
 	}
+	\node at (1.5,3.3) {\tiny My lattice};
 \end{tikzpicture}
+

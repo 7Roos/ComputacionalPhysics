@@ -1,0 +1,548 @@
+\documentclass[12pt]{article}
+%\usepackage{tikz}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=2cm]{geometry}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{longtable} % Enable break rows of the table
+
+\usepackage{ifthen}
+%\usepackage{etoolbox}
+
+\usepackage{listings}
+\lstset{
+	language=[LaTeX]TeX,
+	basicstyle=\ttfamily,
+	keepspaces=true,
+	columns=fixed,
+	breaklines=true,
+	commentstyle=\color{green!50!black},
+	keywordstyle=\color{blue!70!red},
+	stringstyle=\color{red},
+	backgroundcolor=\color{yellow!40},
+	frame=single,
+	framesep=0pt,
+	framerule=0pt,
+	frameshape={RYR}{Y}{Y}{RYR},
+	rulecolor=\color{gray!50},
+	literate=
+		{<i>}{{{\color{red}<i>}}}3
+		{<j>}{{{\color{red}<j>}}}3
+		{<x>}{{{\color{red}<x>}}}3
+		{<y>}{{{\color{red}<y>}}}3
+		{<Op>}{{{\color{teal!80!black}<Op>}}}4
+		{\\ifboolFlag}{{\\color{violet}\\ifboolFlag}}1,
+		moretexcs={ifboolFlag},
+		texcsstyle=*\color{violet}
+}
+
+\renewcommand{\i}{1}
+\renewcommand{\j}{2}
+\renewcommand{\k}{-1}
+\newcommand{\x}{1.1cm}
+\newcommand{\y}{2pt}
+\newcommand{\z}{2.0pt}
+\newif\ifboolFlag \boolFlagtrue % set the boolean variable to true
+
+% Add footer with variable values
+\newcommand{\variablefooter}{
+	\noindent\rule{\textwidth}{0.5pt}
+	\footnotesize
+	\begin{tabular}{l@{\hspace{1cm}}l@{\hspace{1cm}}l@{\hspace{1cm}}l@{\hspace{1cm}}l@{\hspace{1cm}}l@{\hspace{1cm}}l}
+	  \textcolor{red}{$i = \i$} & 
+	  \textcolor{blue}{$j = \j$} & 
+	  \textcolor{green!60!black}{$k = \k$} & 
+	  \textcolor{orange}{$x = \x$} & 
+	  \textcolor{purple}{$y = \y$} & 
+	  \textcolor{teal}{$z = \z$} & 
+	  \textcolor{magenta}{\texttt{boolFlagtrue}} \\
+	\end{tabular}
+  }
+
+  % Add the footer to each page
+  \pagestyle{fancy}
+  \fancyhf{}
+  \renewcommand{\footrule}{\rule{\textwidth}{0pt}}
+  \fancyfoot[C]{\variablefooter}
+
+\title{Conditional Commands in \LaTeX}
+\author{M. Roos}
+
+\begin{document}
+\maketitle
+	
+\section{Define parameter}
+\begin{center}
+		% These @{} directives remove the default padding space at the outer edges of the table, creating a more compact layout that aligns flush with the surrounding text.
+		% Within this table, six mathematical expressions are displayed, each showing a variable name followed by its current value.
+		%the tilde symbol (~) serves as a special character that creates a non-breaking space.
+		\begin{tabular}{@{}cccccc@{}}
+			$\bullet~i = \i$ & \hspace{0.5cm} $\bullet~j = \j$ & \hspace{0.5cm} $\bullet~k = \k$ & \hspace{0.5cm} $\bullet~x = \x$ & \hspace{0.5cm} $\bullet~y = \y$ & \hspace{0.5cm} $\bullet~z = \z$ \\
+		\end{tabular}
+\end{center}
+
+\section{Native commands}
+	
+\subsection{The \texttt{\textbackslash ifodd} command}
+	\noindent\textbf{Description:} Checks if a number \textcolor{violet}{\texttt{<i>}} is odd or even.
+
+	\noindent\textbf{Inline syntax:}
+	\begin{lstlisting}
+\ifodd <i> <code if true> \else <code if false> \fi
+	\end{lstlisting}
+
+	\noindent\textbf{Block syntax:}
+	\begin{lstlisting}
+\ifodd <i>
+<code executed if condition is true>
+\else
+<code executed if condition is false>
+\fi
+	\end{lstlisting}
+	\begin{center}
+	\begin{tabular}{l|c}
+		\hline
+		\textbf{Command} & \textbf{Result} \\
+		\hline
+		\verb|\ifodd| \texttt{\textbackslash i} & 
+		\ifodd \i	{odd}	\else	{even}  \fi \\
+		\verb|\ifodd| \texttt{\textbackslash j} & 
+		\ifodd \j	{odd}	\else	{even}  \fi \\
+		\verb|\ifodd| \texttt{\textbackslash k} & 
+		\ifodd \k	{odd}	\else	{even}  \fi \\
+		\verb|\ifodd| \texttt{\textbackslash y} & 
+		\ifodd \y	{odd}	\else	{even}  \fi \\
+		\verb|\ifodd| \texttt{\textbackslash z} & 
+		\ifodd \z	{odd}	\else	{even}  \fi \\
+		\hline
+	\end{tabular}
+	\end{center}
+	\noindent\textbf{Example:} \verb|\ifodd \i {Odd} \else {Even} \fi| $\Longrightarrow$ produces "\ifodd \i Odd \else Even \fi".
+
+%=================================================================
+%=================================================================	
+
+	\subsection{The \texttt{\textbackslash ifnum} command}
+		\noindent\textbf{Description:} Compares two integer numbers \textcolor{violet}{\texttt{<i>}} and \textcolor{violet}{\texttt{<j>}} and conditionally executes code.
+
+		\noindent\textbf{Valid Op:} \texttt{<} (less than), \texttt{=} (equal to), \texttt{>} (greater than)
+
+		\noindent\textbf{Inline syntax:}
+		\begin{lstlisting}
+\ifnum <i> <Op> <j> <code if true> \else <code if false> \fi
+		\end{lstlisting}
+
+		\noindent\textbf{Block syntax:}
+		\begin{lstlisting}
+\ifnum <i> <Op> <j>
+    <code executed if condition is true>
+\else
+    <code executed if condition is false>
+\fi
+		\end{lstlisting}
+
+		\begin{center}
+		\begin{tabular}{c|l|c}
+			\hline
+			\emph{Op} & \textbf{Command} & \textbf{Result} \\
+			\hline
+			\verb|<| & \verb|\ifnum| \texttt{\textbackslash i} \verb|<| \texttt{\textbackslash j} & 
+			\ifnum \i < \j	{true}	\else	{false}  \fi \\
+			\verb|<| & \verb|\ifnum| \texttt{\textbackslash i} \verb|<| \texttt{\textbackslash k} & 
+			\ifnum \i < \k	{true}	\else	{false}  \fi \\
+			\hline
+			\verb|>| & \verb|\ifnum| \texttt{\textbackslash i} \verb|>| \texttt{\textbackslash j} & 
+			\ifnum \i > \j	{true}	\else	{false}  \fi \\
+			\verb|>| & \verb|\ifnum| \texttt{\textbackslash i} \verb|>| \texttt{\textbackslash k} & 
+			\ifnum \i > \k	{true}	\else	{false}  \fi \\
+			\hline
+			\verb|=| & \verb|\ifnum| \texttt{\textbackslash i} \verb|=| \texttt{\textbackslash j} & 
+			\ifnum \i = \j	{true}	\else	{false}  \fi \\
+			\verb|=| & \verb|\ifnum| \texttt{\textbackslash i} \verb|=| \texttt{\textbackslash k} & 
+			\ifnum \i = \k	{true}	\else	{false}  \fi \\
+			\hline
+		\end{tabular}
+	\end{center}
+
+	\noindent\textbf{Example:} 
+		\begin{lstlisting}
+\ifnum \i < \j 
+   True
+\else
+   False
+\fi %produces "\ifnum \i<\j True \else False \fi" 
+		\end{lstlisting}
+
+%=================================================================
+%=================================================================	
+
+	\subsection{The \texttt{\textbackslash ifdim} command}
+		\noindent\textbf{Description:} Compares two dimensions \textcolor{violet}{\texttt{<x>}} and \textcolor{violet}{\texttt{<y>}} and conditionally executes code.
+
+		\noindent\textbf{Valid Op:} \texttt{<} (less than), \texttt{=} (equal to), \texttt{>} (greater than)
+
+		\noindent\textbf{Inline syntax:}
+		\begin{lstlisting}
+\ifdim <x> <Op> <y> <code if true> \else <code if false> \fi
+		\end{lstlisting}
+		
+		\noindent\textbf{Block syntax:}
+		\begin{lstlisting}[basicstyle=\ttfamily\small]
+\ifdim <x> <Op> <y>
+   <code executed if condition is true>
+\else
+   <code executed if condition is false>
+\fi
+		\end{lstlisting}
+		
+	\begin{center}
+		\begin{tabular}{c|l|c}
+			\hline
+			\emph{Op} & \textbf{Command} & \textbf{Result} \\
+			\hline
+			\verb|<| & \verb|\ifdim| \texttt{\textbackslash x} \verb|<| \texttt{\textbackslash y} & 
+			\ifdim \x < \y	{true}	\else	{false}  \fi \\
+			\verb|<| & \verb|\ifdim| \texttt{\textbackslash z} \verb|<| \texttt{\textbackslash y} & 
+			\ifdim \z < \y	{true}	\else	{false}  \fi \\
+			\hline
+			\verb|>| & \verb|\ifdim| \texttt{\textbackslash x} \verb|>| \texttt{\textbackslash y} & 
+			\ifdim \x > \y	{true}	\else	{false}  \fi \\
+			\verb|>| & \verb|\ifdim| \texttt{\textbackslash z} \verb|>| \texttt{\textbackslash y} & 
+			\ifdim \z > \y	{true}	\else	{false}  \fi \\
+			\hline
+			\verb|=| & \verb|\ifdim| \texttt{\textbackslash x} \verb|=| \texttt{\textbackslash y} & 
+			\ifdim \x = \y	{true}	\else	{false}  \fi \\
+			\verb|=| & \verb|\ifdim| \texttt{\textbackslash z} \verb|=| \texttt{\textbackslash y} & 
+			\ifdim \z = \y	{true}	\else	{false}  \fi \\
+			\hline
+		\end{tabular}
+	\end{center}
+
+	\noindent\textbf{Example:} \verb|\ifdim \x < \y True \else False \fi| $\Longrightarrow$ produces "\ifdim \x<\y True \else False \fi".
+
+%=================================================================
+%=================================================================		
+
+	\subsection{The \texttt{\textbackslash ifcase} command}
+		\noindent\textbf{Description:} Compares a number \textcolor{violet}{\texttt{<i>}} with a list of numbers and conditionally executes code. Implements a multiple selection structure, similar to the switch-case of other programming languages.
+
+		\noindent\textbf{Inline syntax:}
+		\begin{lstlisting}
+\ifcase <i> <cond 0> \or <cond 1> \or <cond 2> \else <cond n> \fi
+		\end{lstlisting}
+
+		\noindent\textbf{Block syntax:}
+		\begin{lstlisting}
+\ifcase <i>
+   <code executed if <i> is 0>
+\or
+   <code executed if <i> is 1>
+\or
+   <code executed if <i> is 2>
+\else
+   <code executed if <i> is n> % Standart case
+\fi
+		\end{lstlisting}
+
+	\begin{center}
+		\begin{tabular}{l|c}
+			\hline
+			\textbf{Command} & \textbf{Result} \\
+			\hline
+			\verb|\ifcase| \texttt{\textbackslash i} & 
+			\ifcase \i	{condition 0} \or {condition 1}  \fi \\
+			\verb|\ifcase| \texttt{\textbackslash j} & 
+			\ifcase \j	{condition 0} \or {condition 1} \or {condition 2}  \fi \\
+			\verb|\ifcase| \texttt{\textbackslash x} & 
+			\ifcase \y	{condition 0} \or {condition 1} \or {condition 2}  \fi \\
+			\verb|\ifcase| \texttt{\textbackslash y} & 
+			\ifcase \z	{condition 0} \or {condition 1} \or {condition 2}  \fi \\
+			\hline
+		\end{tabular}
+	\end{center}
+
+	\noindent\textbf{Example:} \verb|\ifcase \i	{condition 0} \or {condition 1}  \fi| $\Longrightarrow$ produces "\ifcase \i {condition 0} \or {condition 1}  \fi".
+	
+%=================================================================
+%=================================================================	
+
+\subsection{The \texttt{\textbackslash ifx} or \texttt{\textbackslash if} command}
+
+		\noindent\textbf{Description:} Compares two tokens \textcolor{violet}{\texttt{<token 1>}} and \textcolor{violet}{\texttt{<token 2>}} and conditionally executes code.
+
+		\noindent\textbf{Inline syntax:}
+		\begin{lstlisting}
+\ifx <token 1> <token 2> <code if true> \else <code if false> \fi 
+%or 
+\if <token 1> <token 2> <code if true> \else <code if false> \fi 
+		\end{lstlisting}
+
+		\noindent\textbf{Block syntax:}
+		\begin{lstlisting}
+\ifx <token 1> <token 2>
+   <code executed if token 1 is identical to token 2>
+\else
+   <code executed if condition is false>
+\fi 
+%or
+\if <token 1> <token 2>
+   <code executed if token 1 is identical to token 2>
+\else
+   <code executed if condition is false>
+\fi
+		\end{lstlisting}
+
+	\begin{center}
+		\begin{tabular}{l|c}
+			\hline
+			\textbf{Command} & \textbf{Result} \\
+			\hline
+			\verb|\ifx| \texttt{\textbackslash i} \texttt{\textbackslash j} & 
+			\ifx \i \j	{true}	\else	{false}  \fi \\
+			\verb|\ifx| \texttt{\textbackslash i} \texttt{\textbackslash k} & 
+			\ifx \i \k	{true}	\else	{false}  \fi \\
+			\verb|\ifx| \texttt{\textbackslash x} \texttt{\textbackslash y} & 
+			\ifx \x \y	{true}	\else	{false}  \fi \\
+			\verb|\ifx| \texttt{\textbackslash z} \texttt{\textbackslash y} & 
+			\ifx \z \y	{true}	\else	{false}  \fi \\
+			\hline
+		\end{tabular}
+	\end{center}
+
+	\noindent\textbf{Example:} \verb|\ifx \i \j {True} \else {False} \fi| $\Longrightarrow$ produces "\ifx \i \j True \else False \fi".
+
+%=================================================================
+%=================================================================
+
+	\subsection{The \texttt{\textbackslash newif} command}
+	\noindent\textbf{Description:} You can create new conditionals (as a kind of boolean variables) with the \verb|\newif| command. With this self defined conditionals you can control the output of your code in an elegant way. Two versions of a document must be generated.
+
+	\noindent\textbf{Inline syntax:}
+	\begin{lstlisting}
+\newif\if<boolFlag> \boolFlagtrue \ifboolFlag <code if true> \else <code if false> \fi
+	\end{lstlisting}
+
+	\noindent\textbf{Block syntax:}
+	\begin{lstlisting}
+\newif\if<boolFlag> % create a new boolean variable
+\boolFlagtrue       % set the boolean variable to true
+%\boolFlagfalse     % set the boolean variable to false
+\ifboolFlag         % check the value of the boolean variable
+   <code executed if condition is true>
+\else
+   <code executed if condition is false>
+\fi
+	\end{lstlisting}
+
+	\begin{center}
+		\begin{tabular}{l|c}
+			\hline
+			\textbf{Command} & \textbf{Result} \\
+			\hline
+			\verb|\ifboolFlag| & \ifboolFlag \textbf{True} \else \textbf{False} \fi \\ 
+			\hline
+		\end{tabular}
+	\end{center}
+
+	\noindent\textbf{Example:} 
+	\begin{lstlisting}
+\newif\ifOp % create a new boolean variable
+\Optrue     % set the boolean variable to true
+\ifOp       % check the value of the boolean variable
+   \textbf{True}
+\else
+   \textbf{False}
+\fi
+	\end{lstlisting}
+	\noindent produces "\newif\ifOp \Optrue \Opfalse \ifOp <code executed if condition is true> \else <code executed if condition is false> \fi".
+%=================================================================
+%=================================================================
+	\subsection{The \texttt{\textbackslash ifdefined} command}
+	\noindent\textbf{Description:} Checks if a command \textcolor{green!50!black}{\texttt{<Op>}} is defined or not.
+
+	\noindent\textbf{Inline syntax:}
+	\begin{lstlisting}
+\ifdefined <Op> <code if true> \else <code if false> \fi
+	\end{lstlisting}
+
+	\noindent\textbf{Block syntax:}
+	\begin{lstlisting}
+\ifdefined <Op>
+   <code executed if condition is true>
+\else
+   <code executed if condition is false>
+\fi
+	\end{lstlisting}
+
+	\begin{center}
+		\begin{tabular}{l|c}
+			\hline
+			\textbf{Command} & \textbf{Result} \\
+			\hline
+			\verb|\ifdefined| \texttt{\textbackslash i} & 
+			\ifdefined \i	{defined}	\else	{undefined}  \fi \\
+			\verb|\ifdefined| \texttt{\textbackslash j} & 
+			\ifdefined \j	{defined}	\else	{undefined}  \fi \\
+			\verb|\ifdefined| \texttt{\textbackslash k} & 
+			\ifdefined \k	{defined}	\else	{undefined}  \fi \\
+			\verb|\ifdefined| \texttt{\textbackslash abc} & 
+			\ifdefined \abc	{defined}	\else	{undefined}  \fi \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\noindent\textbf{Example:} \verb|\ifdefined \i {True} \else {False} \fi| $\Longrightarrow$ produces "\ifdefined \i True \else False \fi".
+%=================================================================
+%=================================================================
+
+	\section{Packages}
+
+	\subsection{The \texttt{\textbackslash ifthen} package}
+	\noindent\textbf{Description:} Provides a more flexible and user-friendly way to handle conditional statements in \LaTeX. It allows use combinational logic operators \textcolor{red}{\texttt{and}}, \textcolor{red}{\texttt{or}} and \textcolor{red}{\texttt{not}}. Indeed, the pair of parenthesis \textcolor{red}{\texttt{()}} is used to group the boolean expressions. 
+	However, the etoolbox package is recommended for new documents, because it is more modern and has a more consistent syntax. Indeed, the etoolbox package is developed with eLatex in mind, while the ifthen package is a legacy package.
+
+	\subsubsection{The \texttt{\textbackslash ifthenelse} command}
+
+		\noindent\textbf{Description:} Compares an integer positive \textcolor{violet}{\texttt{<i>}} and conditionally executes code.
+
+		\noindent\textbf{Valid Op:} 
+		\begin{itemize}
+			\item Combinational logical operators: \texttt{and} and \texttt{or};
+			\item Negation operator: \texttt{not};
+			\item Relational logical operators: \texttt{<} (less than), \texttt{>} (greater than), \texttt{=} (equal to);
+			\item \texttt{()} is used to group the boolean expressions;
+			\item \verb|\isodd| check if a number is odd or even. Similar to \verb|\ifodd|;
+			\item \verb|\isundefined| is true if \verb|\cmd| is not defined. Similar to \verb|\ifdefined|;
+			\item \verb|\equal| check if two strings is equal or not. Similar to \verb|\ifx|;
+			\item \verb|\lengthtest| check if a length is lesser, greater or equal to another
+			 length. Similar to \verb|\ifdim|;
+			\item \verb|\boolean| check if a boolean variable is true or false. Similar to \verb|\newif| mechanism.
+		\end{itemize}
+
+		\noindent\textbf{Inline syntax:}
+		\begin{lstlisting}
+\usepackage{ifthen}
+\ifthenelse{<boolean expression>}{<code if true>}{<code if false>}
+		\end{lstlisting}
+
+		\noindent\textbf{Block syntax:}
+		\begin{lstlisting}
+\usepackage{ifthen}
+\ifthenelse{<boolean expression>}
+   {<code if true>
+}{
+   <code if false>}
+		\end{lstlisting}
+
+		\begin{center}
+			\begin{longtable}{c|l|c}
+				\hline
+				\emph{Op} & \textbf{Command} & \textbf{Result} \\
+				\hline
+				\verb|<| & \verb|\ifthenelse{\i < \j}| & \ifthenelse{\i<\j}{true}{false} \\
+				\verb|<| & \verb|\ifthenelse{\i < \k}| & \ifthenelse{\i<\k}{true}{false (\emph{Mathematical absurdity})} \\
+				\verb|<| & \verb|\ifthenelse{\i < \x}| & \ifthenelse{\i<\x}{true}{false (\emph{Mathematical absurdity})} \\
+				\verb|<| & \verb|\ifthenelse{\i < \y}| & \ifthenelse{\i<\y}{true (\emph{Undefined})}{false} \\
+				\hline
+				\verb|=| & \verb|\ifthenelse{\i = \j}| & \ifthenelse{\i=\j}{true}{false} \\
+				\verb|=| & \verb|\ifthenelse{\i = \k}| & \ifthenelse{\i=\k}{true}{false} \\
+				\verb|=| & \verb|\ifthenelse{\y = \z}| & \ifdefined \ifthenelse{\y=\z}{true}{false} {(\emph{Undefined})} \fi \\
+				\hline
+				\verb|\and| & \verb|\ifthenelse{\i < \j \and 0 < \i}| & \ifthenelse{\i<\j \and 0<\i}{true}{false} \\
+				\hline
+				\verb|\or| & \verb|\ifthenelse{\i < \j \or \i > \j}| & \ifthenelse{\i<\j \or \i>\j}{true}{false} \\
+				\hline
+				\verb|\not| & \verb|\ifthenelse{\not \i < \j}| & \ifthenelse{\not \i < \j}{true}{false} \\
+				\hline
+				\verb|\AND| & \verb|\ifthenelse{\i < \j \AND 0 < \i}| & \ifthenelse{\i < \j \AND 0 < \i}{true}{false} \\
+				\hline
+				\verb|\OR| & \verb|\ifthenelse{\i < \j \OR \i > \j}| & \ifthenelse{\i < \j \OR \i > \j}{true}{false} \\
+				\hline
+				\verb|\NOT| & \verb|\ifthenelse{\NOT \i < \j}| & \ifthenelse{\NOT \i < \j}{true}{false} \\ 
+				\hline
+				\verb|\(\)| & \verb|\ifthenelse{\(\i < \j\)}| & \ifthenelse{\(\i < \j\)}{true}{false} \\
+				\hline
+				\verb|\isodd| & \verb|\ifthenelse{\isodd{\i}}| & \ifthenelse{\isodd{\i}}{true}{false} \\
+				\verb|\isodd| & \verb|\ifthenelse{\isodd{\j}}| & \ifthenelse{\isodd{\j}}{true}{false} \\
+				\verb|\isodd| & \verb|\ifthenelse{\isodd{\k}}| & \ifthenelse{\isodd{\k}}{true}{false} \\
+				\verb|\isodd| & \verb|\ifthenelse{\isodd{\y}}| & \ifthenelse{\isodd{\y}}{true}{false} \\
+				\verb|\isodd| & \verb|\ifthenelse{\isodd{\z}}| & \ifthenelse{\isodd{\z}}{true}{false} \\
+				\hline
+				\verb|\isundefined| & \verb|\ifthenelse{\isundefined{\i}}| & \ifthenelse{\isundefined{\i}}{true}{false} \\
+				\verb|\isundefined| & \verb|\ifthenelse{\isundefined{\j}}| & \ifthenelse{\isundefined{\j}}{true}{false} \\
+				\verb|\isundefined| & \verb|\ifthenelse{\isundefined{\k}}| & \ifthenelse{\isundefined{ki}}{true}{false} \\
+				\verb|\isundefined| & \verb|\ifthenelse{\isundefined{\abc}}| & \ifthenelse{\isundefined{\abc}}{true}{false} \\
+				\hline
+				\verb|\equal| & \verb|\ifthenelse{\equal{\i}{\i}}| & \ifthenelse{\equal{\i}{\i}}{true}{false} \\
+				\verb|\equal| & \verb|\ifthenelse{\equal{\i}{1}}| & \ifthenelse{\equal{\i}{1}}{true}{false} \\
+				\verb|\equal| & \verb|\ifthenelse{\equal{\i}{\j}}| & \ifthenelse{\equal{\i}{\j}}{true}{false} \\
+				\verb|\equal| & \verb|\ifthenelse{\equal{\i}{\k}}| & \ifthenelse{\equal{\i}{\k}}{true}{false} \\
+				\verb|\equal| & \verb|\ifthenelse{\equal{\x}{\y}}| & \ifthenelse{\equal{\x}{\y}}{true}{false} \\
+				\verb|\equal| & \verb|\ifthenelse{\equal{\z}{\y}}| & \ifthenelse{\equal{\z}{\y}}{true}{false} \\
+				\hline
+				\verb|\lengthtest| and \verb|<| & \verb|\ifthenelse{\lengthtest{\x < \y}}| & \ifthenelse{\lengthtest{\x < \y}}{true}{false} \\
+				\verb|\lengthtest| and \verb|<| & \verb|\ifthenelse{\lengthtest{\z < \y}}| & \ifthenelse{\lengthtest{\z < \y}}{true}{false} \\
+				\hline
+				\verb|\lengthtest| and \verb|>| & \verb|\ifthenelse{\lengthtest{\x > \y}}| & \ifthenelse{\lengthtest{\x > \y}}{true}{false} \\
+				\verb|\lengthtest| and \verb|>| & \verb|\ifthenelse{\lengthtest{\z > \y}}| & \ifthenelse{\lengthtest{\z > \y}}{true}{false} \\
+				\hline
+				\verb|\lengthtest| and \verb|=| & \verb|\ifthenelse{\lengthtest{\x = \y}}| & \ifthenelse{\lengthtest{\x = \y}}{true}{false} \\
+				\verb|\lengthtest| and \verb|=| & \verb|\ifthenelse{\lengthtest{\z = \y}}| & \ifthenelse{\lengthtest{\z = \y}}{true}{false} \\
+				\hline
+				\verb|\boolean| & \verb|\ifthenelse{\boolean{boolFlag}}| & \ifthenelse{\boolean{boolFlag}}{true}{false} \\
+				\hline
+			\end{longtable}
+		\end{center}
+	
+		\noindent\textbf{Example:} \verb|\ifthenelse{\i<\j}{True}{False}| $\Longrightarrow$ produces "\ifthenelse{\i<\j}{True}{False}".
+
+		\noindent\textbf{Extra:}
+		\begin{itemize}
+			\item \verb|\newboolean|: Creates a new boolean variable. If it the variable already exists, an error is thrown. Ex: \verb|\newboolean{boolFlag}|;
+			\item \verb|\provideboolean|: Creates a new boolean variable, even if it already exists. 
+			
+			Ex: \verb|\provideboolean{boolFlag}|;
+			\item \verb|\setboolean|: Sets the value of a boolean variable. Ex: \verb|\setboolean{boolFlag}{true}| or \verb|\setboolean{boolFlag}{false}|.
+		\end{itemize}
+%=================================================================
+%=================================================================
+
+	\subsection{The \texttt{\textbackslash etoolbox} package}
+	\noindent\textbf{Description:} Provides a more flexible and user-friendly way to handle conditional statements in \LaTeX. This package provides two interfaces to boolean flags which are completely independent of each other. The tools in section 3.5.1 are a LaTeX frontend to \verb|\newif|. Those in section 3.5.2 use a different mechanism.
+
+	\noindent\textbf{Inline syntax:}
+
+	\begin{lstlisting}
+\usepackage{etoolbox}
+\ifboolexpr{<condition>}{<code if true>}{<code if false>}
+	\end{lstlisting}
+	\noindent\textbf{Block syntax:}
+	\begin{lstlisting}
+\usepackage{etoolbox}
+\ifboolexpr{<condition>}
+	{<code if true>
+}{
+	<code if false>}
+	\end{lstlisting}
+	\begin{center}
+		\begin{tabular}{l|c}
+			\hline
+			\textbf{Command} & \textbf{Result} \\
+			\hline
+			\verb|\ifboolexpr{\i<\j}| &  \\ %\ifboolexpr{\i<\j}{true}{false}
+			%\verb|\ifboolexpr{\i<\k}| & \ifboolexpr{\i<\k}{true}{false (\emph{Mathematical absurdity})} \\
+			%\verb|\ifboolexpr{\i=\j}| & \ifboolexpr{\i=\j}{true}{false} \\
+			%\verb|\ifboolexpr{\i=\k}| & \ifboolexpr{\i=\k}{true}{false} \\
+			%\verb|\ifboolexpr{\i<\x}| & \ifboolexpr{\i<\x}{true}{false (\emph{Mathematical absurdity})} \\
+			%\verb|\ifboolexpr{\i<\y}| & \ifboolexpr{\i<\y}{true (\emph{Undefined})}			{false} \\
+			\hline
+		\end{tabular}
+	\end{center}
+	%\noindent\textbf{Example:} \verb|\ifboolexpr{\i<\j}{True}{False}| $\Longrightarrow$ produces "\ifboolexpr{\i<\j}{True}{False}".
+
+%=================================================================
+%=================================================================
+
+\subsection{The \texttt{\textbackslash xstring} package}
+
+\end{document}

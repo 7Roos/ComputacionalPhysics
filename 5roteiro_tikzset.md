@@ -1,46 +1,57 @@
-# Introdução
-Podemos melhorar o nosso script anterior ao redefinir valores padrão do Tikz, o que eu quero dizer com isso, é se você decidir que todas as linhas que serão desenhadas terão a cor azul, você não precisará escrever color=blue em todas as definições de linhas. Ao invés disso você pode redefinir o valor padrão uma única vez em seu script, e alterar diretamente no desenho caso queira outra cor. Vamos ver como isso é possível em LaTex-Tikz
+# Usando comandos condicionais do TeX
 
-# Redefinindo o estilo da linha
-Podemos redefinir localmente no espoco o estilo padrão das linhas, usamos "help lines/.style={color=blue,very thin}", você poderá substituir a cor que desear e a espessura da linha. Ou então, redefinir globalmente, com tikzset, isso trará maior flexibilidade ao seu código. Dessa forma, podemos usar:
-```
-\tikzset{help lines/.style=very thin}
-```
-Também podemos parametrizar os estilos. Podemos definir a cor padrão azul, e se o usuário definir uma cor diferente, tome 50% dela. Assim, a sintaxe ficaria
-```
-\begin{tikzpicture}
-[Karl's grid/.style ={help lines,color=#1!50},
-Karl's grid/.default=blue]
-\draw[Karl's grid] (0,0) grid (1.5,2);
-\draw[Karl's grid=red] (2,0) grid (3.5,2);
-\end{tikzpicture}
-```
+## Intro
+Um conceito bastante importante em programação é a estrutura de ramificação, isto é, a construção 'if-else'. No primeiro vídeo desta série de estudo do LaTex-TIkz, eu mostrei como utilizar a estrutura de repetição, loops. No qual, nos beneficiamos para automatizar a construção de nossa ilustração. Agora é a vez de utilizarmos condições lógicas para construir figuras. Novamente, vou utilizar a rede quadrada de spins no estado ferromagnético como caso de estudo. Para explorar a aplicação de condicionais, vamos considerar a tarefa de construir uma rede de spins na fase antiferromagnética, isto é, com a alternância de sinal entre seus primeiros vizinhos. Em outras palavras, os círculos poderão assumir apenas duas cores (clara e escura), correspondendo aos estados up e down do spin.
 
-Além disso podemos definir um estilo próprio, personalizada, podemos chamar de mystyle
-```
-my style/.style={draw=red,fill=red!20}
-```
+## Ifnum
 
-Por exemplo, fazer definir a cor, e tamanho para todos os círculos através do ambiente 'tikzset'. Nessa sintaxe, definimos que todos os nós terão o seguinte estilo: circle, draw e com fill igual à 20% de azul.
-```
-\tikzset{
-  every node/.style={circle,draw,fill=blue!20},
-  every edge/.style={draw=black,->}
-}
+## ifdim
+Compara dimensões (comprimentos)
+
+## ifodd: 
+Verifica se um número é ímpar.
+
+## ifx ou \if: 
+Compara a igualdade de tokens (útil para comparar strings ou comandos).
+```latex
+\def\condicao{sim}
+  \foreach \i in {1,2} {
+    \ifx\condicao\relax % \relax é um token especial que geralmente não é definido
+      \node at (0,\i) {Condição não definida};
+    \else
+      \node at (0,\i) {Condição definida};
+    \fi
+  }
 ```
 
-\begin{tikzpicture}[
-  % Estilos globais
-  every node/.style={circle,draw,fill=blue!20},
-  every edge/.style={draw=black,->},
-  
-  % Estilo personalizado para linhas horizontais
-  horizontal line/.style={help lines,color=red}
-]
+## ifdef: 
+Verifica se um comando está definido
 
-% Desenho
-\draw[horizontal line] (0,0) -- (4,0);
-\node[label=above:A] at (1,1) {};
-\node[label=above:B] at (3,1) {};
-\draw[->] (A) -- (B);
-\end{tikzpicture}
+# Pacotes LaTeX para lógica condicional:
+Existem pacotes LaTeX que fornecem comandos mais amigáveis para estruturas condicionais, que podem ser usados dentro de ambientes TikZ:
+
+## ifthenelse: 
+Este pacote oferece comandos como '\ifthenelse{<condição>}{<código se verdadeiro>}{<código se falso>}.':
+```latex
+\foreach \i in {1,...,5} {
+    \ifthenelse{\i < 3}{
+      \draw[thick, blue] (\i,0) -- (\i+1,1);
+    }{
+      \draw[dashed, red] (\i,0) -- (\i+1,1);
+    }
+  }
+```
+
+## ifthen
+A biblioteca matemática do PGF (a base do TikZ) oferece a função 'ifthen(<condição>, <valor se verdadeiro>, <valor se falso>)' que pode ser usada dentro de \pgfmathsetmacro ou diretamente na chave evaluate.
+```latex
+\foreach \i in {1,...,5} {
+    \pgfmathsetmacro{\raio}{ifthen(\i < 3, 1, 2)} % Usando ifthen (ver abaixo)
+    \draw (2*\i,0) circle (\raio cm);
+  }
+  \foreach [evaluate=\j as \cor using \j<3 ? "blue" : "red"] \j in {1,...,5} {
+    \fill[opacity=0.5, \cor] (2*\j,-2) circle (0.5cm);
+  }
+```
+## Referência
+- PGF/TikZ Manual

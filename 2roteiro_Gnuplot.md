@@ -1,102 +1,91 @@
->Múdar a ordem da apresentação do conteúdo: Introduzir o problema, mostrar o roadmap, apresentar o arquivo de dados e o template, e trabalhar os operadores de forma prática, i.e., mostrar a sintaxe dos op.unários e então plotar  utilizando-os, depois mostrar sintaxe dos op. binários, aplicar no plot filtrando os dados, e então finalmente o op.ternário. Usar o manual como referência e montar a tabela<
+**Notas pessoais**
+-Revisar
+-translate
+-ger audio
+-Gerar uma imagem sobre: "This style has some advantages, such as accessibility for people with color blindness. As well, if the graphics will be part of a black and white print, as in scientific publications (because many journals charge extra for color printing), maintaining visual consistency in technical documents."
+-rec
+-edit
 
-Estrutura do Vídeo Sugerida:
-2. Operadores unários:
-    Sintaxe e exemplos
-    Aplicação em gráficos
-3. Operadores binários:
-    Sintaxe e exemplos
-    Filtragem de dados
-    Ordem de precedência e uso de parênteses
-4. Operador ternário:
-    Sintaxe e exemplos
-    Criação de gráficos condicionais
-5. Formatação básica:
-    Cores, estilos de linha, títulos e rótulos
-    Função personalizada
-    # Função para converter Celsius para Fahrenheit
-    celsius_to_fahrenheit(c) = (9/5)*c + 32
+# Estilizando linhas
+Title: Complete Guide to Gnuplot Line Styles: Colors, Width & Patterns
+Descrição:
+Aprenda a dominar todos os aspectos de estilização de linhas no Gnuplot neste tutorial completo! Este vídeo mostra como personalizar completamente suas visualizações científicas com:
 
-    # Plotando os dados, convertendo a segunda coluna para Fahrenheit
-    plot 'dados.dat' using 1:(celsius_to_fahrenheit($2))
-6. Conclusão:
-    Recapitulação dos principais pontos
-    Recursos adicionais
+✓ Estilos pré-definidos (Linetypes)
+✓ Modo monocromático para publicações científicas
+✓ Personalização de espessura (linewidth)
+✓ Padrões de traçado (dashtype)
+✓ Definição de cores personalizadas
 
+Ideal para estudantes, pesquisadores e profissionais que precisam criar gráficos de alta qualidade para artigos, apresentações ou análise de dados.
 
-# Introdução
-Você já se perguntou como destacar uma região específica em um gráfico para enfatizar um resultado importante? Imagine que você tenha um conjunto de dados, e precise visualizar apenas os valores que estão dentro de um determinado intervalo. Ou talvez você queira destacar uma região específica do gráfico com um estilo de linha diferente. Como você faria isso de forma rápida e eficiente? Essas são tarefas comuns na visualização de dados e é fundamental para a interpretação de resultados e a comunicação de ideias. 
-O Gnuplot oferece ferramentas poderosas para realizar essas tarefas de forma simples. Se este for o seu caso, este vídeo é para você!
-Neste vídeo, vamos explorar através de um script Gnuplot como utilizar operadores lógicos para selecionar um intervalo de valores e criar gráficos mais informativos e personalizados. Dessa forma, você não precisará decorar qualquer comando, bastará redefinir o nome do arquivo de dados e o intervalo de dados que deseja traçar. Além disso, vamos ver como aplicar diferentes estilos de linha para destacar diferentes regiões do gráfico.
+📌 Parte da série completa sobre Gnuplot: [link para playlist]
+📚 Próximos vídeos: Guia completo de cores e como criar estilos de linha personalizados!
 
->Criar uma animação mostrando o plot com e sem filtragem de dados<
+Palavras-chave como "gnuplot tutorial", "gnuplot line styles", "scientific plotting"
 
-# Roadmap
-Este será um tutorial bastante prático. Eu vou mostrar o arquivo de dados em que iremos trabalhar, o script .gnu com as intruções Gnuplot, e então vamos manipular a leitura do arquivo de dados para construir o gráfico, aproveitando para explorar a sintaxe e uso dos operadores lógicos, tudo isso de forma prática.
+## Introdução
+Neste vídeo, você aprenderá a criar no Gnuplot gráficos como este, personalizando completamente a aparência das linhas. Vamos aprender como alterar o estilo da linha, alterando sua cor, espessura e traçado. Será útil para para os iniciantes e também aos mais experientes, pois vou mostrar alguns truques poucos conhecidos. Em um vídeo anterior, havíamos detalhado as diferentes formas de estilizar a exibição da legenda de um gráfico. Para fins didáticos, estamos utilizando um diagrama de fase fictício, escrito em termos da função cosseno. Portanto, caso você tenha alguma dúvida sobre o arquivo de dados utilizado ou outros assuntos abordados anteriormente, considere retornar aos vídeos precedentes desta série sobre Gnuplot (link na descrição). Contudo, nosso diagrama ainda não está visualmente atraente; podemos, e vamos, melhorá-lo. Mas aproveitamos este momento para discutir, passo a passo, inúmeras possibilidades de personalização do estilo de linhas.
 
->Tem uma animação mostrando esses tópicos<
+## Estilos pré-definidos
+No Gnuplot, existem estilos de linhas pré-definidas, chamados 'Linetypes' (LT). Podemos acessá-los utilizando o token LT (em minúsculo, seguindo a convenção do Gnuplot) acompanhado de um rótulo, que é um número inteiro positivo. Essas definições incluem uma espessura e um padrão de traçado predefinidos, com oito cores distintas disponíveis por padrão. No arquivo 'Template.gnu', nas linhas 1 a 3, definimos o cabeçalho, descrevendo o propósito do código, o autor, a data de criação e a última modificação. Nas linhas 5 a 11, configuramos os terminais, escolhendo um deles e comentando o outro. Trabalharemos com o terminal 'PNG Cairo', por ser mais prático para visualizar as mudanças neste formato. Na linha 13, definimos a codificação ('encoding') para UTF-8. Nas linhas 16 e 17, especificamos os rótulos dos eixos horizontal (x) e vertical (y). Na linha 20, declaramos a variável data, que recebe o caminho relativo e o nome do arquivo de dados. Nas linhas 23 e 24, definimos o estilo da legenda. E, finalmente, nas linhas 26 e 27, encontramos o comando 'Plot'. Observe que nenhum estilo de linha foi explicitamente especificado no comando plot. No entanto, ao executar este script no terminal, obtemos duas curvas conectadas com cores diferentes. Apesar de não termos definido cor, espessura ou traçado, o Gnuplot assume alguns valores padrão. Mas qual é essa cor padrão? É fácil imaginar uma espessura única para todas as figuras, mas como mais de uma cor pode fazer parte de um padrão? O que ocorre é que o Gnuplot atribui um 'Linetype' diferente a cada linha plotada, seguindo uma ordem predefinida. Vamos analisar mais de perto. Após o comando ‘with lines’ (W L), definimos o 'Linetype' 1 para a primeira linha e o 'Linetype' 2 para a segunda linha. Executamos o script novamente... Surpreendentemente, nada mudou visualmente! Vamos inverter a numeração, definindo 'Line Type' 2 para a primeira e 'Linetype' 1 para a segunda... Opa! Agora as cores das curvas foram invertidas. Você conseguiu perceber o que está acontecendo aqui? Se você não especificar um estilo de linha, o Gnuplot escolhe um automaticamente para cada curva plotada, seguindo uma ordem sequencial das cores predefinidas. Mas, se existem apenas oito cores predefinidas, o que acontecerá se selecionarmos o 'Linetype' 9? Vejamos... Estranhamente, agora visualizamos apenas uma única linha, ou seja, as duas curvas conectadas possuem a mesma cor. O que ocorreu aqui é que o Gnuplot está aplicando uma espécie de condição de contorno cíclica. Se o usuário escolher LT 9, o Gnuplot retorna o LT 1, e se for LT 10, ele aponta para o LT 2, e assim sucessivamente. Podemos observar neste exemplo todas as oito cores de linhas predefinidas, geradas através do comando nas linhas 32 a 35. Utilizei aspas vazias ('') para omitir a repetição do nome do arquivo de dados, uma vez que todos os comandos estão utilizando a mesma fonte de dados, o que permite encurtar a sintaxe. Nas demais partes do comando plot, manipulei os dados durante a leitura, apenas escalonando a curva para melhor visualização dos diferentes 'Linetypes'. Se você ficou com dúvida quanto a esta sintaxe, confira a série de vídeos que fiz mostrando como manipular dados durante a leitura (link na descrição).
 
-# Datafile
-Consideremos um arquivo de dados simples, com duas colunas de dados da função F de X, dentro do intervalo -2 à 2, com passo de 0.1, você pode gerar esse arquivo com um script Fortran, ou então adaptar estas ideia para o seu caso. 
+## Monocromático
+Caso você prefira um gráfico monocromático, ou seja, em escala de cinza, o Gnuplot oferece a opção 'set monochrome', que definimos na linha 30 do script de exemplo. Ao ativar este modo, as diferentes linhas no gráfico serão distinguidas pelo padrão de traçado (sólida, tracejada, pontilhada, entre outros). Por padrão, o Gnuplot define seis tipos de linhas monocromáticas. Podemos acessá-los alterando o 'Line Type' (LT), como demonstrado no exemplo a seguir (linhas 32 a 35 do script comentado). Este estilo possui algumas vantagens, como acessibilidade para pessoas daltônicas. Bem como, se os gráficos farão parte de uma impressão em preto e branco, como em publicações científicas (pois muitos periódicos cobram extra pela impressão colorida), mantendo a consistência visual em documentos técnicos. Para desabilitar o modo monocromático e retornar ao esquema de cores padrão, basta utilizar o comando 'unset monochrome'. Se este conteúdo lhe foi útil de alguma forma, considere deixar um "like" para apoiar o canal! Ficou com dúvidas ou deseja sugerir um tema, deixe um comentário.
 
-# Template
-Também consideramos um script Gnuplot de extensão gnu extremamente simples e com propósito puramente didático. Na linha 1, definimos o terminal 'pngcairo'. Na linha 2, o nome da figura de saída. Na linha 3, o encoding utf8. Na linha 5 e 6, os rótulos dos eixos x e y, respectivamente. Na linha 8, definimos a variável 'data' que recebo a localização relativa e o nome do arquivo arquivo de dados. Então na linha 10, temos o comando para plotar com linha (with line, ou simplesmente w l), chamando o arquivo de dados através da variável criada. Parece redundante criar essa variável, mas essa estratégia nos permite escalar nosso script, pois mantemos as configurações do plot, e alteramos apenas o nome do arquivo de dados na linha 8. 
+## Espessura da linha
+Contudo, digamos que você não queira se limitar às opções predefinidas e deseje personalizar as linhas do gráfico de acordo com suas preferências. Felizmente, isso é possível no Gnuplot. Vamos começar pela alteração da espessura da linha, utilizando o comando 'line width', abreviado como LW. Uma forma de alterar a espessura da linha globalmente é na definição do terminal. Inicialmente, o valor padrão para a espessura da linha é LW 1. Como vimos, ao executar o script com este valor, a espessura das linhas permanece inalterada, pois 1 é o padrão. Se alterarmos para LW 2, podemos observar que não apenas as curvas do gráfico, mas também as linhas que delimitam os eixos X e Y, tornam-se mais espessas. É possível reduzir a espessura utilizando valores entre 0 e 1. No entanto, também podemos modificar a espessura da linha manualmente na configuração de estilo do comando 'plot'. Por exemplo, para a primeira linha plotada, após especificar o 'Line Type' (LT) 1, adicionamos o comando LW 2. Ao executar o script novamente, notamos que apenas a primeira curva se tornou mais espessa. Isso demonstra que é possível utilizar um estilo predefinido, como 'LT' 1, e personalizá-lo com opções adicionais. Contudo, é importante ressaltar que as possibilidades de uso do comando 'linewidth' podem apresentar variações entre os diferentes terminais do Gnuplot.
 
-Uma boa prática é criar um cabeçalho, explicando qual é o propósito desse template (isso será bastante útil quando você tiver vários templates e desejar saber rapidamente do que se trata o script). Você també pode adicionar o nome do autor e a data de criação e última modificação (se for o caso). Issso tornará seu script mais profissional.
+## Traçado da linha
+Avançando em nossas opções de personalização, outro aspecto importante das linhas que podemos modificar é o seu traçado. Como observamos anteriormente, por padrão, as linhas são exibidas de forma sólida. Contudo, o Gnuplot permite alterar esse comportamento através do comando  'dashtype' (abreviado como dt), que oferece cinco padrões predefinidos. Uma das maneiras de especificar o padrão de traçado é através de um número inteiro, como demonstrado no exemplo nas linhas 46 a 49 do script. Similarmente ao que vimos com os 'Linetypes', o Gnuplot aplica condições de contorno ao especificarmos um número que excede as opções de traçado disponíveis. Se o estilo monocromático mantém uma escala de cinza, diferenciando as linhas pelo traçado e espessura, o que ocorreria se ativarmos novamente esse estilo em conjunto com a definição de um 'Dash Type'? Ao fazermos isso, como ilustrado no exemplo nas linhas 46 a 49, notamos que o traçado obedece à nossa definição, enquanto a cor permanece em escala de cinza. Contudo, se as opções predefinidas de traçado ainda não atenderem às suas necessidades, o Gnuplot oferece a flexibilidade de criar padrões personalizados a partir dos estilos 'dot' (ponto) e 'dash' (traço), utilizando uma sintaxe intuitiva com caracteres. Além disso, podemos utilizar uma representação numérica para definir padrões de traçado mais complexos, informando uma sequência de valores que representam alternadamente o comprimento da parte sólida do traço e o espaço entre os traços, como podemos observar nos exemplos nas linhas 57 e 60 do script.
 
-Agora, vamo ao terminal e executamos esse plot chamando o programa gnuplot. Adicionamos a flag 'p', ou 'plot' e o nome do template '.gnu' entre aspas. Pronto! Temos nosso plot salvo em 'dash.png'. Funcionou!
+## Um pouco de cor
+Finalmente, o último aspecto da estilização de linhas que abordaremos neste vídeo é a cor. Podemos alterar a cor de uma linha utilizando o comando 'line color', abreviado como LC, seguido do nome da cor desejada entre aspas, como demonstrado no exemplo nas linhas 62 e 64 do script. Também é possível combinar a definição de cor com outros comandos de estilo, como o 'Line Type' (LT), preservando a espessura e o traçado predefinidos desse tipo, mas alterando a sua cor. Além disso, podemos combinar a definição explícita da cor com outras escolhas de espessura (lw) e traçado (dt). Mas o que ocorreria agora se ativarmos mais uma vez o modo monocromático (set monochrome) em conjunto com a definição de cores? Podemos notar, como ilustrado no exemplo nas linhas 63 e 64, que as linhas mantiveram a cor definida, mas houve uma alteração no traçado daquelas linhas para as quais não havíamos especificado um 'Dash Type' (dt). Sendo assim, o modo monocromático aplica suas configurações de traçado e espessura apenas às linhas cujas características não foram definidas explicitamente pelo usuário. 
 
-# Selecionando colunas
-Vamos considerar agora a situação hipotética, na qual eu queira selecionar apenas os valores positivos do eixo horizontal, ou seja, X maior que zero. Isso pode ser alcançado ao manipular a leitura do arquivo de dados. Para Fazer isso, utilizamos o comando 'u', ou 'using' e depois especificar as colunas de dados utilizada para o eixo horizontal e vertical, separadas pelo token de dois pontos. Nesse caso são apenas as colunas 1 e 2. Adapte conforme sua necessidade!. Esse comando, u 1:2, deve estar depois de 'data' e antes de 'with line'. Podemos plotar novamente, e veja que temos o mesmo resultado de antes, ou seja, são formas análogas de plotar o arquivo de dados, mas com esta segunda abordagem sendo um pouco mais verbosa. 
+## Conclusão
+Contudo, o universo de personalização de cores no Gnuplot é vasto e já exploramos o bastante por hoje. Aprendemos como alterar o estilo de uma linha, selecionando cor, espessura e tracejado. No próximo vídeo, discutiremos esse assunto em detalhes. Até a próxima!
 
-Agora, para seleionar apenas os valores positivos do eixo x, primeiro substituo 1 por dólar 1 maior do que zero e um ponto de interrogação, após esse ponto dizemos o que o Gnuplot deve fazer se o valor da coluna 1 lido for maior do que zero, o token dois pontos é a separação para a segunda condição, senão plote 1 divido por zero, ou seja, não faça nada. Vamos ver como vai ficar o gráfico... Funcionou! Agora tente aí mudar o critério, por exemplo, x maior do que 1. Resumindo, a sintaxe: 
--Encerre a coluna de dados por um par de parênteses, aplique a condição, sequida de um ponto de interrogação, à direita desse ponto estará o que que o Gnuplot deverá fazer caso a condição seja verdadeira, já depois do símbolo de dois pontos, o que fazer quando a condição for falsa.
-(condição ? valor_se_verdadeiro : valor_se_falso)
+# En version
+## Introduction
+In this video, you will learn how to create in Gnuplot graphs like this one, completely customizing the appearance of the lines. Let’s learn how to change the style of the line, changing its color, thickness and stroke. It will be useful for beginners and also the more experienced, because I will show some little known tricks. In a previous video, we had detailed the different ways to style the display of the legend of a chart. For didactic purposes, we are using a fictitious phase diagram, written in terms of the cosine function. Therefore, if you have any questions about the data file used or other topics covered earlier, consider returning to the previous videos of this series on Gnuplot (link in the description). However, our diagram is not yet visually appealing; we can and will improve it. But we take this moment to discuss, step by step, numerous possibilities of customization of the style of lines.
+In Gnuplot, there are predefined line styles, called 'Linetypes' (LT). We can access them using the LT token (in lowercase, following the Gnuplot convention) accompanied by a label, which is a positive integer. These settings include a predefined stroke pattern and thickness, with eight distinct colors available by default. In the file 'Template.gnu', in lines 1 to 3, we define the header, describing the purpose of the code, the author, the creation date and the last modification. In lines 5 to 11, we configure the terminals, choosing one of them and commenting on the other. We will work with the terminal 'PNG Cairo', because it is more practical to view the changes in this format. In line 13, we define the encoding for UTF-8. In lines 16 and 17, we specify the labels of the horizontal (x) and vertical (y) axes. In line 20, we declare the variable date, which receives the relative path and name of the data file. In lines 23 and 24, we define the style of the legend. And finally, in lines 26 and 27, we find the command 'Plot'. Note that no line style was explicitly specified in the plot command. However, when running this script in the terminal, we get two curves connected with different colors. Although we have not defined color, thickness or stroke, the Gnuplot assumes some default values. But what is this default color? It’s easy to imagine a single thickness for all the figures, but how can more than one color be part of a pattern? What happens is that Gnuplot assigns a different 'Linetype' to each plotted line, following a predefined order. Let’s look at it more closely. After the command 'with lines' (W L), we set 'Linetype' 1 for the first line and 'Linetype' 2 for the second line. We run the script again... Surprisingly, nothing has changed visually! Let’s invert the numbering, setting 'Line Type' 2 for the first and 'Linetype' 1 for the second... Oops! Now the colors of the curves have been inverted. Did you get a sense of what’s going on here? If you do not specify a line style, Gnuplot automatically chooses one for each plotted curve, following a sequential order of the predefined colors. But if there are only eight default colors, what will happen if we select 'Linetype' 9? Let’s see... Strangely, we now only see a single line, that is, the two connected curves have the same color. What has happened here is that the Gnuplot is applying a kind of cyclic boundary condition. If the user chooses LT 9, the Gnuplot returns LT 1, and if it is LT 10, it points to LT 2, and so on. We can see in this example all eight colors of predefined lines, generated by the command on lines 32 to 35. I used empty quotes to omit repeating the name of the data file, since all commands are using the same data source, which allows the syntax to be shortened. In the other parts of the plot command, I manipulated the data during reading, just scaling the curve for better visualization of the different 'Linetypes'. If you were in doubt about this syntax, check out the series of videos that I made showing how to manipulate data during reading (link in the description).
+If you prefer a monochrome graphic, that is, in gray scale, the Gnuplot offers the option 'set monochrome', which we defined in line 30 of the example script. When this mode is activated, the different lines in the graph will be distinguished by the stroke pattern (solid, dashed, dotted, etc.). By default, the Gnuplot defines six types of monochrome lines. We can access them by changing the 'Line Type' (LT), as shown in the following example (lines 31 to 34 of the commented script). This style has some advantages, such as accessibility for people with color blindness. As well, if the graphics will be part of a black and white print, as in scientific publications (because many journals charge extra for color printing), maintaining visual consistency in technical documents. To disable monochrome mode and return to the default color scheme, simply use the 'unset monochrome' command. If this content has been useful to you in some way, consider leaving a "like" to support the channel! Have questions or want to suggest a theme, leave a comment.
+However, let’s say you don’t want to limit yourself to the default options and want to customize the lines of the chart according to your preferences. Fortunately, this is possible in Gnuplot. Let’s start by changing the line thickness, using the 'line width' command, abbreviated as LW. A way to change the line thickness globally is in the terminal setting. Initially, the default value for the line thickness is LW 1. As we saw, when running the script with this value, the thickness of the lines remains unchanged, since 1 is the default. If we change to LW 2, we can see that not only the curves of the graph, but also the lines delimiting the x and y axes, become thicker. It is possible to reduce the thickness by using values between 0 and 1. However, we can also modify the thickness of the line manually in the 'plot' command style setting. For example, for the first plotted line, after specifying 'Line Type' (LT) 1, we added the command LW 2. When running the script again, we noticed that only the first curve became thicker. This demonstrates that you can use a predefined style, such as 'LT' 1, and customize it with additional options. However, it is important to note that the possibilities of using the 'linewidth' command may vary between different terminals of Gnuplot.
+Moving forward in our customization options, another important aspect of the lines that we can modify is its stroke. As we noted earlier, by default the lines are displayed solid. However, Gnuplot allows you to change this behavior through the 'dashed' option (abbreviated as dt), which offers five predefined patterns. One of the ways to specify the stroke pattern is through an integer, as shown in the example on lines 46-49 of the script. Similar to what we saw with the 'Linetypes', the Gnuplot applies boundary conditions by specifying a number that exceeds the available tracing options. If the monochrome style maintains a grayscale, differentiating lines by stroke and thickness, what would happen if we reactivate this style together with the definition of a 'Dash Type'? In doing this, as illustrated in the example on lines 46 to 49, we notice that the stroke follows our definition, while the color remains in grayscale. However, if the default stroke options still do not meet your needs, Gnuplot offers the flexibility to create custom patterns from the 'dot' (point) and 'dash' styles using an intuitive character syntax. In addition, we can use a numerical representation to define more complex stroke patterns by reporting a sequence of values that alternately represent the length of the solid part of the stroke and the space between the strokes, as we can see in the examples on lines 57 and 60 of the script.
+Finally, the last aspect of line styling that we will cover in this video is color. We can change the color of a line using the 'line color' command, abbreviated as LC, followed by the name of the desired color in quotation marks, as shown in the example in lines 62 and 64 of the script. It is also possible to combine the color definition with other style commands, as the 'Line Type' (LT), preserving the predefined thickness and stroke of that type, but changing its color. In addition, we can combine the explicit definition of color with other choices of thickness (lw) and stroke (dt). But what would happen now if we activate once again the monochrome mode (monochrome set) together with the color definition? We can notice, as illustrated in the example in lines 63 and 64, that the lines kept the defined color, but there was a change in the stroke of those lines for which we had not specified a 'Dash Type' (dt). Thus, the monochrome mode applies its stroke and thickness settings only to lines whose characteristics were not explicitly defined by the user.
+However, the universe of color customization in Gnuplot is vast and we have explored enough for today. We learn how to change the style of a line by selecting color, thickness and dashed. In the next video, we will discuss this in detail. See you next time!
 
-# Operadores
-## Operadores unários
-O que acabamos de fazer foi utilizar operadores lógicos para manipular a leitura de dados pelo Gnuplot. Mas estes não são os únicos operadores disponíveis. Como podemos ver nessa tabela que mostra os operadores unários.
+# Guia de cores
+**Notas pessoais**
+- Pág. 35 e 139 do manual 
+- Motrar em detalhes as várias formas de definir cores no Gnuplot, como RGB, CMYK, HSV, HLS e outros. E então, no próximo vídeo, mostrar que todo esse conjunto de definições diretamente nas instruções do plot podem ser sumarizadas na definição de um estilo, mantendo a consistência visual entre os gráficos.
+- Escrever o roteiro
 
->Tabela construída<
-**Fazer um exemplo**
+## Introduction
+In the previous video, we learned how to customize the appearance of lines in Gnuplot. In this video, we will explore the topic of colors in Gnuplot in details. We will learn how to define colors, search inspiration for color palettes and create our own color palette. 
 
-Considerando que 'A=3', salvo as exceções. O primeiro token é o sinal de menos, que inverte o sinal de 'A', o símbolo de soma é um operador neutro em 'A'. O ponto de exclamação antes de 'A' é uma negação lógica, se 'A' é verdadeiro então sua negação é falsa e vice-versa. Caso o símbolo de exclamação venha depois de 'A' então é um fatorial, o fatorial de 3 é 6. E por fim, o símbolo dólar, que acabamos de utilizar, que permitiu selecionar uma coluna de dados durante uma manipulação 'using'. 
+## Specify colors
+In Gnuplot, we can specify colors of the lines with 'linecolor' or simply (lc) command followed by the specified color. There are three main ways to define colors in Gnuplot: 'colorname', 'colorspec', and the 'n' number of the linetype. 
 
-## Operadores binários
-Entretando, esta não é a única classe de operadores, há ainda os operadores binários aritméticos, que combina duas quantidades através de operações aritméticas básicas. Como apresentado nessa tabela.
+### Colorname
+The 'colorname' is a string that represents the name of the color. Gnuplot knows a limited number of color names. To see the list of known color names, we must entry in Gnuplot enviroment and use the command: `show colornames'. Alternatively, we can use the command in the shell terminal: gnuplot -e 'show colornames'. This command reveals, we can see the list with 111 predefined colors with their values in HTML and RGB format.
 
->tabela pronta<
-**Fazer um exemplo**
+### Colorspec
+The 'colorspec' is a string that represents the color in a specific format, such as RGB or CMYK. 
 
-Bem como os operadores binários relacionais, que resulta em um valor lógico verdaddeiro ou falso. Como é mostrado nessa outra tabela.
+### N linetype
+The 'n' number of the linetype is an integer that represents the index of the color in the color palette. 
 
->tabela pronta<
-**Fazer um exemplo**
+The most common methods include:
 
-Temos ainda outros dois operadores binários. Nesse caso é útil montar uma tabela verdade, ou diagrama de Venn.
+1. **Named colors**: Gnuplot recognizes a set of named colors (e.g., "red", "green", "blue", etc.). You can use these names directly in your commands.
+2. **RGB values**: You can define colors using their RGB components. The syntax is `rgb "R,G,B"`, where R, G, and B are values between 0 and 255.
+3. **Hexadecimal values**: Similar to web design, you can use hexadecimal color codes (e.g., `"#FF0000"` for red).
+4. **Color palettes**: Gnuplot supports color palettes, which are predefined sets of colors that can be applied to plots.
 
->Tabela pronta<
-**Fazer um exemplo**
+# Criando um estilo com Line Style.
 
-Por fim, o operador ternário
+## Comments about versions of Gnuplot
+Antes da versão 5: Cada terminal (png, postscript, etc.) definia seu próprio conjunto de "linetypes" com combinações específicas de cor, espessura e padrão de traço. Embora a maioria usasse a sequência vermelho/verde/azul/magenta/ciano/amarelo, não havia garantia de consistência entre diferentes terminais.
 
->Tabela pronta<
-**Fazer um exemplo**
-
-# Personalização
-## Estilo da linha
-Explorar diferentes estilos de linha (linhas sólidas, tracejadas, pontilhadas), cores e espessuras para destacar as diferentes regiões do gráfico.
-
-## Usar funções
-Criar uma função no script Gnuplot para automatizar o processo de filtragem. Isso permitirá que o espectador modifique facilmente os parâmetros do gráfico sem precisar editar todo o script.
-
-## Comentários
-Adicionar comentários ao longo do script para explicar cada linha de código e facilitar a compreensão.
-
-# Recaptulando
-Alterar o estilo da linha do gráfico é importante para enfatizar uma região de interesse, simplificar a análise ao focar nos dados mais relevantes, bem como evitar erros de interpretação dos resultados.
-Mas afinal, porquê é importante selecionar um intervalo de valores do arquivo de dados com comandos Gnuplot, uma vez que eu poderia criar dois ou mais arquivos de dados, ou então finalizar o estilo das linhas em outro software como o Inkscape? Bem, existem diversos motivos para seguir a abordagem mostrada nesse vídeo, dentre eles: Agilidade, Flexibilidade ao adaptar os gráficos às necessidades específicas em cada análise, precisão aofazer isso através de script, altamente escalável, utilizar apenas um software é mais prático do que recorrer ao Gnuplot, no qual terá que selecionar manualmente a personalização, enquanto que através do script será automatizado.
-
-# Dicas Adicionais:
-
-**Recursos online:** Indicar o manual oficial do Gnuplot.
+A partir da versão 5: O Gnuplot passou a usar uma sequência de 8 cores independente do terminal. Isso significa que agora, por padrão, as mesmas 8 cores serão usadas em todos os terminais, garantindo consistência visual entre diferentes formatos de saída.

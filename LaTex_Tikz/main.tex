@@ -25,6 +25,29 @@
 \newcommand{\sizeCircle}{0.15}
 \newcommand{\povGlow}{280}
 
+% Styles
+%% Help lines style
+\tikzset{help lines/.style={very thin, orange}}
+
+%% Every elements
+\tikzset{
+	every node/.style={rectangle, draw, fill=blue!20, rounded corners=2pt, inner sep=1}
+}
+
+%% Personal style
+\tikzset{
+	myGrid/.style={line width=1, line cap=round},
+	mySpin/.style={circle, draw=white,ball color=j4, shading angle=\povGlow, minimum size=0.3cm},
+}
 \begin{document}
-	\include{grid}
+	%\include{grid}
+	\begin{tikzpicture}
+		\draw[myGrid] (0,0) grid (\LL, \LL);
+		\foreach \j in {0,1,...,\LL}{
+			\foreach \i in {0,1,...,\LL}{
+				\node[mySpin] at (\i,\j) {} ; 
+			}
+		}
+		\node at (1.5,3.3) {\tiny My lattice};
+	\end{tikzpicture}
 \end{document}
