@@ -1,6 +1,7 @@
 from manim import *  # or: from manimlib import *
 from pathlib import Path
 import os
+import sys
 from manim import AS2700
 
 # Flags:
@@ -8,7 +9,23 @@ from manim import AS2700
 # -sqh: save last frame hight quality
 
 FLAGS = f"-ql"  # If Vertival, comment this line
-SCENE = "Prob2"
+
+# Configuração inteligente da cena
+AVAILABLE_SCENES = {
+    "1": "Unidimensional_vertical",
+    "2": "Prob2",
+    "3": "Prob3",
+    "vertical": "Prob1_vertical",
+    "summary": "Summary",
+}
+
+# Determinar qual cena executar
+if len(sys.argv) > 1:
+    scene_arg = sys.argv[1].lower()
+    SCENE = AVAILABLE_SCENES.get(scene_arg, "Prob2")  # Default para Prob2
+else:
+    SCENE = "Prob2"  # Default quando nenhum argumento é fornecido
+
 CLEAN = "--flush_cache  "  # Remove cached partial movie files
 
 # Vertical config
@@ -224,6 +241,282 @@ class Unidimensional_vertical(Scene):
         self.wait()
 
 
+class Prob2(MovingCameraScene):
+    def construct(self):
+        # ========================================
+        # SEÇÃO 1: DEFINIÇÃO DE OBJETOS
+        # ========================================
+
+        # Background e grid
+        grid = NumberPlane(
+            background_line_style={
+                "stroke_color": GRAY_A,
+                "stroke_width": 1,
+                "stroke_opacity": 0.2,
+            },
+            axis_config={"stroke_opacity": 0},
+            faded_line_style={
+                "stroke_color": GRAY_A,
+                "stroke_width": 1,
+                "stroke_opacity": 0.2,
+            },
+            faded_line_ratio=1,
+        )
+
+        # Título e problema usando função utilitária
+        problem_content = [
+            MathTex(
+                "\\text{Uma carga }",
+                "q_{1}",
+                "\\text{ está a uma distância }",
+                "R",
+                "\\text{ de uma segunda}",
+            ).set_color_by_tex_to_color_map({"q_{1}": BLUE, "R": ORANGE}),
+            MathTex(
+                "\\text{carga }",
+                "q_{2}",
+                ".",
+                "\\text{ Calcule a força }",
+                "\\vec{F}_{12}",
+                "\\text{ entre as cargas.}",
+            ).set_color_by_tex_to_color_map({"q_{2}": BLUE, "\\vec{F}_{12}": GREEN}),
+        ]
+
+        exercise_box = create_exercise_statement(2, problem_content)
+
+        # Livros usando função utilitária
+        books = create_book_covers()
+
+        # Partículas usando função simplificada
+        q1 = create_charge_particle(1)  # q1 com cores avermelhadas
+        q2 = create_charge_particle(2, position=3 * RIGHT)  # q2 com cores azuladas
+        # Elementos de conexão
+        line = Line(q1.get_right(), q2.get_left())
+        line.set_color_by_gradient(AS2700.R32_APPLE_BLOSSOM, AS2700.B32_POWDER_BLUE)
+        invisible_line = Line(q1.get_center(), q2.get_center())
+        b1 = Brace(invisible_line, direction=UP, color=AS2700.Y13_VIVID_YELLOW, buff=0.6)
+        b1text = b1.get_text("$R$")
+        b1text.set_color(AS2700.Y13_VIVID_YELLOW)
+        particles = VGroup(q1, line, q2, b1, b1text)
+
+        # Lei de Coulomb
+        law = Text("Lei de Coulomb", font="LobsterTwo", color=AS2700.Y13_VIVID_YELLOW)
+        eq_law = MathTex(
+            "\\vec{F}_{ij} = k_{0} \\frac{q_{i}q_{j}}{|\\vec{r}_{i} - \\vec{r}_{j}|^{3}} \\left( \\vec{r}_{i} - \\vec{r}_{j} \\right) "
+        )
+        coulomb_law = VGroup(law, eq_law)
+
+        # Equações subsequentes
+        eq_law_final = MathTex(
+            "\\vec{F}_{12} = k_{0} \\frac{q_{1}q_{2}}{|\\vec{r}_{1} - \\vec{r}_{2}|^{3}} \\left( \\vec{r}_{1} - \\vec{r}_{2} \\right) "
+        )
+
+        location = MathTex(
+            "\\vec{r}_{1} &= 0 \\hat{x} \\\\",
+            "\\vec{r}_{2} &= R \\hat{x}",
+        )
+        location_brace = Brace(location, direction=LEFT, color=AS2700.Y13_VIVID_YELLOW)
+        location_group = VGroup(location, location_brace)
+
+        eq_replace_vals = MathTex(
+            "\\vec{F}_{12} = k_{0} \\frac{q_{1}q_{2}}{|-R\\hat{x}|^{3}} \\left( -R\\hat{x} \\right) "
+        )
+
+        eq_signal_vector = MathTex(
+            "\\vec{F}_{12} = -k_{0} \\frac{q_{1}q_{2}}{R^{3}}  R\\hat{x} "
+        )
+
+        eq_simplified_R = MathTex(
+            "\\vec{F}_{12} = -k_{0} \\frac{q_{1}q_{2}}{R^{2}} \\hat{x} "
+        )
+
+        # Equações para F21
+        eq_F12 = MathTex(
+            "\\vec{F}_{21} = k_{0} \\frac{q_{2}q_{1}}{|\\vec{r}_{2} - \\vec{r}_{1}|^{3}} \\left( \\vec{r}_{2} - \\vec{r}_{1} \\right) "
+        )
+
+        location2 = MathTex(
+            "\\vec{r}_{1} &= -R \\hat{x} \\\\",
+            "\\vec{r}_{2} &= 0\\hat{x}",
+        )
+        location_brace2 = Brace(
+            location2, direction=LEFT, color=AS2700.Y13_VIVID_YELLOW
+        )
+        location_group2 = VGroup(location2, location_brace2)
+
+        eq_replace_vals2 = MathTex(
+            "\\vec{F}_{21} = k_{0} \\frac{q_{2}q_{1}}{|-R\\hat{x}|^{3}} \\left( R\\hat{x} \\right) "
+        )
+
+        eq_signal_vector2 = MathTex(
+            "\\vec{F}_{21} = k_{0} \\frac{q_{2}q_{1}}{R^{3}}  R\\hat{x} "
+        )
+
+        eq_simplified_R2 = MathTex(
+            "\\vec{F}_{21} = k_{0} \\frac{q_{2}q_{1}}{R^{2}} \\hat{x} "
+        )
+
+        thirdLaw = MathTex("=-\\vec{F}_{21}")
+
+        # Tabela de casos
+        table_data = [
+            ["\\text{Caso 1: }  q_{1}q_{2}> 0", "\\text{Caso 2: }  q_{1}q_{2}< 0"],
+            ["\\text{Mesma polaridade}", "\\text{Polaridade oposta}"],
+            [
+                "\\begin{array}{c} \\vec{F}_{12} \\rightarrow - \\hat{x} \\\\ \\vec{F}_{21} \\rightarrow + \\hat{x} \\end{array} \\text{(repulsiva)}",
+                "\\begin{array}{c} \\vec{F}_{12} \\rightarrow + \\hat{x} \\\\ \\vec{F}_{21} \\rightarrow - \\hat{x} \\end{array} \\text{(atrativa)}",
+            ],
+        ]
+
+        cases_table = MathTable(
+            table_data,
+            include_outer_lines=False,
+            line_config={"stroke_width": 3, "color": AS2700.Y13_VIVID_YELLOW},
+            v_buff=0.4,
+            h_buff=0.8,
+        ).scale(0.9)
+
+        # Ajustes da tabela
+        first_horizontal_line = cases_table.get_horizontal_lines()[0]
+        for line in cases_table.get_horizontal_lines():
+            cases_table.remove(line)
+        cases_table.add(first_horizontal_line)
+        cases_table.get_entries((1, 1)).set_color(BLUE)
+        cases_table.get_entries((1, 2)).set_color(RED)
+
+        # ========================================
+        # SEÇÃO 2: POSICIONAMENTO DE OBJETOS
+        # ========================================
+
+        # Posicionar elementos principais
+        exercise_box.to_edge(UL).shift(0.3 * UP)
+
+        # Posicionar partículas
+        particles.to_corner(DL).shift(UP)
+
+        # Posicionar Lei de Coulomb
+        eq_law.next_to(law, DOWN)
+        coulomb_law.next_to(particles, RIGHT)
+
+        # Posicionar equações subsequentes
+        eq_law_final.next_to(law, DOWN)
+        location_group.next_to(eq_law, RIGHT).shift(0.3 * RIGHT)
+        eq_replace_vals.next_to(law, DOWN)
+        eq_signal_vector.next_to(eq_replace_vals, ORIGIN)
+        eq_simplified_R.next_to(eq_replace_vals, ORIGIN)
+
+        # Posicionar segunda análise
+        eq_F12.next_to(law, DOWN).shift(DOWN)
+        location_group2.next_to(eq_F12, RIGHT).shift(0.19 * RIGHT)
+        eq_replace_vals2.next_to(eq_F12, ORIGIN)
+        eq_signal_vector2.next_to(eq_replace_vals2, ORIGIN)
+        eq_simplified_R2.next_to(eq_replace_vals2, ORIGIN)
+        thirdLaw.next_to(eq_simplified_R, RIGHT)
+
+        # Posicionar tabela
+        cases_table.to_edge(LEFT).shift(5 * DOWN)
+
+        # ========================================
+        # SEÇÃO 3: ANIMAÇÕES
+        # ========================================
+
+        # Início da cena
+        self.add(grid)
+        self.add(exercise_box)
+        self.add(books)
+        self.add(particles)
+        self.wait()
+
+        # Animar saída dos livros
+        self.play(
+            books.animate.shift(10 * RIGHT),
+            run_time=1,
+            rate_func=smooth,
+        )
+        self.wait()
+
+        # Introduzir Lei de Coulomb
+        self.add(coulomb_law)
+        self.wait()
+
+        # Transformar equação geral para específica
+        self.play(
+            Transform(eq_law, eq_law_final),
+            run_time=1,
+            rate_func=smooth,
+        )
+        self.wait()
+
+        # Mostrar localização das cargas
+        self.add(location_group)
+        self.wait()
+
+        # Primeira substituição
+        self.play(
+            Transform(eq_law, eq_replace_vals),
+            run_time=1,
+            rate_func=smooth,
+        )
+        self.remove(location_group)
+        self.wait()
+
+        # Simplificação do sinal
+        self.play(
+            Transform(eq_law, eq_signal_vector),
+            run_time=1,
+            rate_func=smooth,
+        )
+        self.wait()
+
+        # Simplificação final
+        self.play(
+            Transform(eq_law, eq_simplified_R),
+            run_time=1,
+            rate_func=smooth,
+        )
+        self.wait()
+
+        # Mover câmera para análise adicional
+        self.play(self.camera.frame.animate.move_to(3.8 * DOWN))
+        self.wait()
+
+        # Análise da força F21
+        self.add(eq_F12)
+        self.add(location_group2)
+        self.wait()
+
+        # Transformações para F21
+        self.play(
+            Transform(eq_F12, eq_replace_vals2),
+            run_time=1,
+            rate_func=smooth,
+        )
+        self.remove(location_group2)
+        self.wait()
+
+        self.play(
+            Transform(eq_F12, eq_signal_vector2),
+            run_time=1,
+            rate_func=smooth,
+        )
+        self.wait()
+
+        self.play(
+            Transform(eq_F12, eq_simplified_R2),
+            run_time=1,
+            rate_func=smooth,
+        )
+        self.wait()
+
+        # Mostrar terceira lei
+        self.play(Transform(eq_F12, thirdLaw))
+        self.wait()
+
+        # Criar tabela de casos
+        self.play(Create(cases_table), run_time=1.5)
+        self.wait()
+
+
 class Prob1_vertical(MovingCameraScene):
     def construct(self):
         # blackboard
@@ -259,36 +552,9 @@ class Prob1_vertical(MovingCameraScene):
         # particles
         particles = VGroup()
 
-        # Criação das partículas com efeitos visuais
-        q1 = Circle(radius=0.4)
-        q1.set_fill(
-            color=color_gradient([AS2700.R32_APPLE_BLOSSOM, AS2700.R41_SHELL_PINK], 3),
-            opacity=0.8,
-        )
-        q1.set_stroke(color=AS2700.R32_APPLE_BLOSSOM, width=2)
-
-        # Efeito de brilho para q1
-        q1_glow = Circle(radius=0.5)
-        q1_glow.set_fill(color=AS2700.R32_APPLE_BLOSSOM, opacity=0.2)
-        q1_glow.set_stroke(width=0)
-
-        q2 = Circle(radius=0.4)
-        q2.set_fill(
-            color=color_gradient([AS2700.B32_POWDER_BLUE, AS2700.B41_BLUEBELL], 3),
-            opacity=0.8,
-        )
-        q2.set_stroke(color=AS2700.B32_POWDER_BLUE, width=2)
-        q2.shift(3 * RIGHT)
-
-        # Efeito de brilho para q2
-        q2_glow = Circle(radius=0.5)
-        q2_glow.set_fill(color=AS2700.B32_POWDER_BLUE, opacity=0.2)
-        q2_glow.set_stroke(width=0)
-        q2_glow.shift(3 * RIGHT)
-
-        # Labels com fonte mais elegante
-        q1label = MathTex("q_{1}", color=WHITE).next_to(q1, 0.1 * DL)
-        q2label = MathTex("q_{2}", color=WHITE).next_to(q2, 0.1 * DR)
+        # Criação das partículas usando função simplificada
+        q1 = create_charge_particle(1)  # q1 com cores avermelhadas
+        q2 = create_charge_particle(2, position=3 * RIGHT)  # q2 com cores azuladas
 
         # Linhas com gradiente
         line = Line(q1.get_right(), q2.get_left())
@@ -307,7 +573,7 @@ class Prob1_vertical(MovingCameraScene):
 
         # Adiciona todos os elementos ao grupo
         particles.add(
-            q1_glow, q1, q1label, line, q2_glow, q2, q2label, invisible_line, b1, b1text
+            q1, line, q2, invisible_line, b1, b1text
         )
 
         # Move o grupo inteiro para o canto inferior esquerdo
@@ -433,364 +699,6 @@ class Prob1_vertical(MovingCameraScene):
 # Uma carga pontual de +3,12 E-6 C está 12,3 cm de distância de uma segunda carga pontual de -1,48 E-6 C. Calcule a intensidade da força em cada carga.
 
 
-class Prob2(MovingCameraScene):
-    def construct(self):
-        # blackboard com grid suave sem eixos principais
-        grid = NumberPlane(
-            background_line_style={
-                "stroke_color": GRAY_A,
-                "stroke_width": 1,
-                "stroke_opacity": 0.2,
-            },
-            # Remove os eixos principais
-            axis_config={
-                "stroke_opacity": 0,
-            },
-            # Configura o grid
-            faded_line_style={
-                "stroke_color": GRAY_A,
-                "stroke_width": 1,
-                "stroke_opacity": 0.2,
-            },
-            faded_line_ratio=1,
-        )
-        self.add(grid)
-
-        # Cria o grupo principal do problema
-        problem = VGroup()
-
-        # Exercise number with bold font
-        numberOfExercise = Text(
-            "Exercício 2",
-            color=YELLOW,
-            font="LobsterTwo",  # Fonte mais chamativa e disponível
-            weight="BOLD",  # Negrito
-            font_size=80,  # Tamanho um pouco maior
-        )
-
-        # Problem statement with highlighted variables
-        problem_statement = VGroup(
-            MathTex(
-                "\\text{Uma carga }",
-                "q_{1}",
-                "\\text{ está a uma distância }",
-                "R",
-                "\\text{ de uma segunda carga }",
-            ).set_color_by_tex_to_color_map({"q_{1}": BLUE, "R": ORANGE}),
-            MathTex(
-                "q_{2}",
-                ".",
-                "\\text{ Calcule a força }",
-                "\\vec{F}_{12}",
-                "\\text{ entre as cargas.}",
-            ).set_color_by_tex_to_color_map({"q_{2}": BLUE, "\\vec{F}_{12}": GREEN}),
-        ).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
-
-        # Adiciona os elementos ao grupo principal
-        problem.add(numberOfExercise, problem_statement)
-
-        # Organiza o grupo principal
-        problem.arrange(DOWN, aligned_edge=LEFT, buff=0.5)
-
-        # Posiciona o grupo na cena
-        problem.to_edge(UL)
-
-        # Cria a caixa ao redor do problema
-        box = SurroundingRectangle(
-            problem,
-            color=WHITE,
-            buff=0.5,  # Padding ao redor do conteúdo
-            corner_radius=0.3,
-            fill_opacity=0.2,  # Preenchimento suave
-        )
-        # Adiciona o gradiente ao preenchimento
-        box.set_fill(color=color_gradient([BLUE, AS2700.Y15_SUNFLOWER], 2))
-
-        # Adiciona elementos à cena
-        self.add(box, problem)  # Adiciona a caixa primeiro para ficar atrás
-
-        # Cria um grupo para as imagens dos livros
-        books = Group()
-
-        # Adiciona as imagens dos livros ao grupo
-        book1 = (
-            ImageMobject("./media/images/hallidayEd12Vol3.jpg")
-            .scale(0.22)
-            .to_corner(DR)
-            .shift(0.5 * DOWN + 0.4 * RIGHT)
-        )
-        book2 = (
-            ImageMobject("./media/images/hallidayEd5Vol3.png")
-            .scale(1.92)
-            .to_corner(DR)
-            .shift(0.5 * DOWN + 1.7 * LEFT)
-        )
-
-        books.add(book1, book2)
-        self.add(books)
-
-        # particles
-        # Criação das partículas com efeitos visuais
-        # Create group for particle 1
-        q1_group = VGroup()
-        
-        q1 = Circle(radius=0.4)
-        q1.set_fill(
-            color=color_gradient([AS2700.R41_SHELL_PINK, AS2700.G31_VERTIGRIS], 3),
-            opacity=0.8,
-        )
-        q1.set_stroke(color=AS2700.R41_SHELL_PINK, width=2)
-
-        # Efeito de brilho para q1
-        q1_glow = Circle(radius=0.5)
-        q1_glow.set_fill(color=AS2700.R32_APPLE_BLOSSOM, opacity=0.2)
-        q1_glow.set_stroke(width=0)
-        
-        # Add elements to particle1_group
-        q1_group.add(q1, q1_glow)
-        
-        # Position the group at ORIGIN
-        r1 = 6*LEFT + 2*DOWN
-        q1_group.move_to(r1)
-
-        # Create group for particle 2
-        q2_group = VGroup()
-
-        q2 = Circle(radius=0.4)
-        q2.set_fill(
-            color=color_gradient([AS2700.B32_POWDER_BLUE, AS2700.B41_BLUEBELL], 3),
-            opacity=0.8,
-        )
-        q2.set_stroke(color=AS2700.B32_POWDER_BLUE, width=2)
-
-        # Efeito de brilho para q2
-        q2_glow = Circle(radius=0.5)
-        q2_glow.set_fill(color=AS2700.B32_POWDER_BLUE, opacity=0.2)
-        q2_glow.set_stroke(width=0)
-
-        # Add elements to particle2_group
-        q2_group.add(q2, q2_glow).move_to(r1 + 3 * RIGHT)
-
-        # Labels com fonte mais elegante
-        q1label = MathTex("q_{1}", color=BLUE).next_to(q1_group, 0.1 * DL)
-        q2label = MathTex("q_{2}", color=BLUE).next_to(q2_group, 0.1 * DR)
-
-        # Linhas com gradiente
-        line = Line(q1_group.get_right(), q2_group.get_left())
-        line.set_color_by_gradient(AS2700.R32_APPLE_BLOSSOM, AS2700.B32_POWDER_BLUE)
-
-        # Linha invisível para o Brace (mede distância entre centros)
-        invisible_line = Line(q1_group.get_center(), q2_group.get_center())
-
-        # Brace com estilo mais elegante
-        b1 = Brace(invisible_line, direction=UP, color=AS2700.Y13_VIVID_YELLOW).shift(
-            0.5 * UP
-        )
-        b1text = b1.get_text("$R$")
-        b1text.set_color(AS2700.Y13_VIVID_YELLOW)
-
-        particles = VGroup()
-        # Adiciona todos os elementos ao grupo
-        particles.add(q1_group, q1label, line, q2_group, q2label, b1, b1text)
-
-        self.add(particles)
-        self.wait()
-
-        # Anima o grupo de livros para a direita até sair da tela
-        self.play(
-            books.animate.shift(10 * RIGHT),  # Move 10 unidades para a direita
-            run_time=1,  # Duração da animação em segundos
-            rate_func=smooth,  # Função de interpolação suave
-        )
-        self.wait()
-
-        # law's Coulomb
-        coulomb_law = VGroup()
-
-        law = Text("Lei de Coulomb", font="LobsterTwo", color=AS2700.Y13_VIVID_YELLOW)
-        eq_law = MathTex(
-            "\\vec{F}_{ij} = k_{0} \\frac{q_{i}q_{j}}{|\\vec{r}_{i} - \\vec{r}_{j}|^{3}} \\left( \\vec{r}_{i} - \\vec{r}_{j} \\right) "
-        ).next_to(law, DOWN)
-
-        # Adiciona os elementos ao grupo
-        coulomb_law.add(law, eq_law)
-        coulomb_law.next_to(particles, RIGHT)
-
-        self.add(coulomb_law)
-        self.wait()
-
-        # Cria a equação com índices substituídos
-        eq_law_final = MathTex(
-            "\\vec{F}_{12} = k_{0} \\frac{q_{1}q_{2}}{|\\vec{r}_{1} - \\vec{r}_{2}|^{3}} \\left( \\vec{r}_{1} - \\vec{r}_{2} \\right) "
-        ).next_to(law, DOWN)
-
-        # Anima a substituição dos índices
-        self.play(
-            TransformMatchingTex(eq_law, eq_law_final),
-            run_time=1,
-            rate_func=smooth,
-        )
-        self.wait()
-
-
-        # location of charges
-        location_group = VGroup()
-
-        location = MathTex(
-            "\\vec{r}_{1} &= 0 \\hat{x} \\\\",
-            "\\vec{r}_{2} &= R \\hat{x}",
-        )
-
-        # Cria o brace para as equações de localização
-        location_brace = Brace(location, direction=LEFT, color=AS2700.Y13_VIVID_YELLOW)
-
-        # Adiciona os elementos ao grupo
-        location_group.add(location, location_brace)
-        location_group.next_to(eq_law, RIGHT).shift(0.3 * RIGHT)
-        self.add(location_group)
-        self.wait()
-
-        # Cria a equação com os vetores posição substituídos
-        eq_replace_vals = MathTex(
-            "\\vec{F}_{12} = k_{0} \\frac{q_{1}q_{2}}{|-R\\hat{x}|^{3}} \\left( -R\\hat{x} \\right) "
-        ).next_to(law, DOWN)
-
-        # Anima a substituição dos vetores posição
-        self.play(
-            TransformMatchingTex(eq_law_final, eq_replace_vals),
-            run_time=1,
-            rate_func=smooth,
-        )
-        self.remove(location_group)
-        self.wait()
-
-        # Signal vector
-        eq_signal_vector = MathTex(
-            "\\vec{F}_{12} = -k_{0} \\frac{q_{1}q_{2}}{R^{3}}  R\\hat{x} "
-        ).next_to(eq_replace_vals, ORIGIN)
-        self.play(
-            TransformMatchingTex(eq_replace_vals, eq_signal_vector),
-            run_time=1,
-            rate_func=smooth,
-        )
-        self.wait()
-
-        # Simplified R factor
-        eq_simplified_R = MathTex(
-            "\\vec{F}_{12} = -k_{0} \\frac{q_{1}q_{2}}{R^{2}} \\hat{x} "
-        ).next_to(eq_replace_vals, ORIGIN)
-        self.play(
-            TransformMatchingTex(eq_signal_vector, eq_simplified_R),
-            run_time=1,
-            rate_func=smooth,
-        )
-        self.wait()
-        
-
-        # advanced for cases
-        self.play(self.camera.frame.animate.move_to(3.8 * DOWN))
-        self.wait()
-
-        # F21
-        eq_F12 = MathTex(
-            "\\vec{F}_{21} = k_{0} \\frac{q_{2}q_{1}}{|\\vec{r}_{2} - \\vec{r}_{1}|^{3}} \\left( \\vec{r}_{2} - \\vec{r}_{1} \\right) "
-        ).next_to(law, DOWN).shift(DOWN)
-        self.add(eq_F12)
-
-        location2 = MathTex(
-            "\\vec{r}_{1} &= -R \\hat{x} \\\\",
-            "\\vec{r}_{2} &= 0\\hat{x}",
-        ).next_to(eq_F12, RIGHT).shift(0.3 * RIGHT)
-        location_brace2 = Brace(location2, direction=LEFT, color=AS2700.Y13_VIVID_YELLOW)
-        location_group2 = VGroup(location2, location_brace2)
-        self.add(location_group2)
-        self.wait()
-        
-
-        # Cria a equação com os vetores posição substituídos
-        eq_replace_vals2 = MathTex(
-            "\\vec{F}_{21} = k_{0} \\frac{q_{2}q_{1}}{|-R\\hat{x}|^{3}} \\left( R\\hat{x} \\right) "
-        ).next_to(eq_F12, ORIGIN)
-        # Anima a substituição dos vetores posição
-        self.play(
-            TransformMatchingTex(eq_F12, eq_replace_vals2),
-            run_time=1,
-            rate_func=smooth,
-        )
-        self.remove(location_group2)
-        self.wait()
-
-        # Signal vector
-        eq_signal_vector2 = MathTex(
-            "\\vec{F}_{21} = k_{0} \\frac{q_{2}q_{1}}{R^{3}}  R\\hat{x} "
-        ).next_to(eq_replace_vals2, ORIGIN)
-        self.play(
-            TransformMatchingTex(eq_replace_vals2, eq_signal_vector2),
-            run_time=1,
-            rate_func=smooth,
-        )
-        self.wait() 
-        # Simplified R factor
-        eq_simplified_R2 = MathTex(
-            "\\vec{F}_{21} = k_{0} \\frac{q_{2}q_{1}}{R^{2}} \\hat{x} "
-        ).next_to(eq_replace_vals2, ORIGIN)
-        self.play(
-            TransformMatchingTex(eq_signal_vector2, eq_simplified_R2),
-            run_time=1,
-            rate_func=smooth,
-        )
-        self.wait()
-        # F12 = -F21
-        thirdLaw = MathTex(
-            "=-\\vec{F}_{21}"
-            ).next_to(eq_simplified_R, RIGHT)
-        self.play(TransformMatchingTex(eq_simplified_R2, thirdLaw))
-        self.wait()
-        
-        # Cria a tabela usando o objeto MathTable do Manim
-        table_data = [
-            ["\\text{Caso 1: }  q_{1}q_{2}> 0", "\\text{Caso 2: }  q_{1}q_{2}< 0"],
-            ["\\text{Mesma polaridade}", "\\text{Polaridade oposta}"],
-            [
-            "\\begin{array}{c} \\vec{F}_{12} \\rightarrow - \\hat{x} \\\\ \\vec{F}_{21} \\rightarrow + \\hat{x} \\end{array} \\text{(repulsiva)}",
-            "\\vec{F}_{12} \\rightarrow + \\hat{x} \\text{ atrativa}",
-            ],
-        ]
-        
-        # Cria a tabela
-        cases_table = MathTable(
-            table_data,
-            include_outer_lines=False,
-            line_config={"stroke_width": 3, "color": AS2700.Y13_VIVID_YELLOW},
-            v_buff=0.4,
-            h_buff=0.8,
-        ).scale(0.9)
-        
-        # Salva a primeira linha horizontal
-        first_horizontal_line = cases_table.get_horizontal_lines()[0]
-        
-        # Remove todas as linhas horizontais
-        for line in cases_table.get_horizontal_lines():
-            cases_table.remove(line)
-        
-        # Adiciona a primeira linha de volta
-        cases_table.add(first_horizontal_line)
-        
-        # Aplica cores específicas para as cargas
-        cases_table.get_entries((1, 1)).set_color(BLUE)
-        cases_table.get_entries((1, 2)).set_color(RED)
-        
-        # Posiciona a tabela abaixo da equação simplificada
-        cases_table.to_edge(LEFT).shift(4 * DOWN)
-        
-        # Adiciona a tabela à cena
-        self.play(Create(cases_table), run_time=1.5)
-        self.wait()
-
-
-# Duas partículas igualmente carregadas, mantidas separadas pela distância de 3,20 mm, são liberadas do repouso. Observa-se que a aceleração inicial da primeira partícula é de 7,22 m/s2 e que da segunda é 9,16 m/s2. A massa da primeira partícula é de 6.31 e-7 kg. Ache (a) a massa da segunda partícula e (b) a intensidade da carga comum destas.
-
-
 # Três partículas carregadas repousam em uma linha reta e são separadas pela distância d. As cargas q1 e q2 são mantidas fixas. A carga q3, que é livre para mover-se, está em equilíbrio sobre a ação das forças elétricas. Ache q1 em função de q2.
 
 #  Cada uma de duas pequenas esferas está carregada positivamente, com carga total de +52,6 E-6C. Cada esfera é repelida da outra com uma força de 1,19 N quando as esferas estão separadas de 1,94 m. Calcule a carga em cada esfera.
@@ -799,6 +707,266 @@ class Prob2(MovingCameraScene):
 # Duas cargas fixas, +1,07 E-6 C e -3,28 E-6 C, estão separadas por 61,8 cm. Onde uma terceira carga pode ser posicionada para que a força resultante que age sobre ela seja nula?
 
 
+def create_charge_particle(charge_number=1, radius=0.4, position=ORIGIN):
+    """
+    Função simplificada para criar partículas carregadas (q1 ou q2) com cores predefinidas.
+
+    Args:
+        charge_number: Número da carga (1 ou 2). Padrão: 1 (q1)
+        radius: Raio da partícula. Padrão: 0.4
+        position: Posição inicial da partícula. Padrão: ORIGIN
+
+    Returns:
+        VGroup: Grupo contendo a partícula, seu efeito de brilho e label
+    """
+    # Cores predefinidas para cada carga
+    if charge_number == 1:
+        # q1 - cores avermelhadas
+        color_gradient_colors = [AS2700.R32_APPLE_BLOSSOM, AS2700.R41_SHELL_PINK]
+        glow_color = AS2700.R32_APPLE_BLOSSOM
+        label_text = "q_{1}"
+        label_color = BLUE
+    elif charge_number == 2:
+        # q2 - cores azuladas
+        color_gradient_colors = [AS2700.B32_POWDER_BLUE, AS2700.B41_BLUEBELL]
+        glow_color = AS2700.B32_POWDER_BLUE
+        label_text = "q_{2}"
+        label_color = BLUE
+    else:
+        # Fallback para q1 se número inválido
+        color_gradient_colors = [AS2700.R32_APPLE_BLOSSOM, AS2700.R41_SHELL_PINK]
+        glow_color = AS2700.R32_APPLE_BLOSSOM
+        label_text = "q_{1}"
+        label_color = BLUE
+
+    # Partícula principal
+    particle = Circle(radius=radius)
+    particle.set_fill(
+        color=color_gradient(color_gradient_colors, 3),
+        opacity=0.8,
+    )
+    particle.set_stroke(color=color_gradient_colors[0], width=2)
+
+    # Efeito de brilho
+    glow = Circle(radius=radius + 0.1)
+    glow.set_fill(color=glow_color, opacity=0.2)
+    glow.set_stroke(width=0)
+
+    # Label da partícula
+    label = MathTex(label_text, color=label_color)
+    
+    # Grupo da partícula
+    particle_group = VGroup(glow, particle, label)
+    particle_group.move_to(position)
+    
+    # Posicionar o label próximo à partícula
+    if charge_number == 1:
+        label.next_to(particle, 0.1 * DL)
+    else:
+        label.next_to(particle, 0.1 * DR)
+
+    return particle_group
+
+
+class Summary(Scene):
+    """
+    Cena de resumo que consolida os principais conceitos aprendidos.
+    """
+
+    def construct(self):
+        # Título da seção
+        title = Text("Resumo", font="LobsterTwo", color=YELLOW, font_size=60)
+        title.to_edge(UP)
+        self.play(Write(title))
+        self.wait()
+
+        # Pontos principais
+        key_points = VGroup(
+            Text("1. Sistema de coordenadas: cartesiano 1D", font_size=36),
+            Text("2. Sistema de referência: uma carga na origem", font_size=36),
+            Text("3. Lei de Coulomb aplicada com vetores posição", font_size=36),
+            Text("4. Análise de sinais emerge da matemática", font_size=36),
+            Text("5. Terceira Lei de Newton é automática", font_size=36),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.5)
+
+        key_points.next_to(title, DOWN, buff=1)
+
+        # Anima cada ponto aparecendo
+        for point in key_points:
+            self.play(FadeIn(point, shift=UP), run_time=1)
+            self.wait(0.5)
+
+        self.wait(2)
+
+        # Equação final destacada
+        final_equation = MathTex(
+            "\\vec{F}_{12} = -k_0 \\frac{q_1 q_2}{R^2} \\hat{x}", font_size=48
+        ).set_color(GREEN)
+
+        equation_box = SurroundingRectangle(final_equation, color=WHITE, buff=0.3)
+
+        equation_group = VGroup(final_equation, equation_box)
+        equation_group.to_edge(DOWN, buff=1)
+
+        self.play(Create(equation_box), Write(final_equation), run_time=2)
+        self.wait(3)
+
+        # Função utilitária para criar enunciados de exercícios
+
+
+def create_exercise_statement(
+    exercise_number, problem_content, box_colors=[BLUE, AS2700.Y15_SUNFLOWER]
+):
+    """
+    Cria um enunciado de exercício padronizado com caixa, número e conteúdo.
+
+    Args:
+        exercise_number (int): Número do exercício
+        problem_content (VGroup): Conteúdo do problema (VGroup com MathTex)
+        box_colors (list): Lista de cores para o gradiente da caixa
+
+    Returns:
+        VGroup: Grupo contendo caixa e problema formatado
+    """
+    # Título do exercício
+    numberOfExercise = Text(
+        f"Exercício {exercise_number}",
+        color=YELLOW,
+        font="LobsterTwo",
+        weight="BOLD",
+        font_size=80,
+    )
+
+    # Organizar conteúdo do problema
+    if isinstance(problem_content, list):
+        problem_statement = VGroup(*problem_content)
+        problem_statement.arrange(DOWN, aligned_edge=LEFT, buff=0.3)
+    else:
+        problem_statement = problem_content
+
+    # Agrupar título e enunciado
+    problem = VGroup(numberOfExercise, problem_statement).arrange(
+        DOWN, aligned_edge=LEFT, buff=0.5
+    )
+
+    # Criar caixa com bordas arredondadas e gradiente
+    box = SurroundingRectangle(
+        problem,
+        color=WHITE,
+        buff=0.5,
+        corner_radius=0.3,
+        fill_opacity=0.2,
+    )
+    box.set_fill(color=color_gradient(box_colors, 2))
+
+    # Retornar grupo completo
+    return VGroup(box, problem)
+
+
+class Prob3(Scene):
+    """
+    Exemplo de uso da função create_exercise_statement para um terceiro exercício
+    """
+
+    def construct(self):
+        # Exemplo de uso da função utilitária
+        problem_content = [
+            MathTex(
+                "\\text{Duas cargas fixas, }",
+                "+1{,}07 \\times 10^{-6}",
+                "\\text{ C e }",
+                "-3{,}28 \\times 10^{-6}",
+                "\\text{ C,}",
+            ).set_color_by_tex_to_color_map(
+                {"+1{,}07 \\times 10^{-6}": RED, "-3{,}28 \\times 10^{-6}": BLUE}
+            ),
+            MathTex(
+                "\\text{estão separadas por }",
+                "61{,}8",
+                "\\text{ cm. Onde uma terceira carga pode ser}",
+            ).set_color_by_tex_to_color_map({"61{,}8": ORANGE}),
+            MathTex("\\text{posicionada para que a força resultante seja nula?}"),
+        ]
+
+        # Cores personalizadas para a caixa
+        custom_colors = [GREEN, PURPLE]
+
+        # Criar o enunciado usando a função
+        exercise_box = create_exercise_statement(3, problem_content, custom_colors)
+        exercise_box.to_edge(UP)
+
+        # Adicionar à cena
+        self.add(exercise_box)
+        self.wait(2)
+
+
+# Execução principal
 if __name__ == "__main__":
     script_name = f"{Path(__file__).resolve()}"
+
+    # Exibir ajuda se solicitado
+    if len(sys.argv) > 1 and sys.argv[1] in ["-h", "--help", "help"]:
+        print("\n=== SISTEMA DE CENAS v3_cartesian.py ===")
+        print("Uso: python v3_cartesian.py [numero_da_cena]")
+        print("\nCenas disponíveis:")
+        for key, scene in AVAILABLE_SCENES.items():
+            print(f"  {key:8} -> {scene}")
+        print(f"\nPadrão: {SCENE} (quando nenhum argumento é fornecido)")
+        print(f"Flags: {FLAGS}")
+        print("\nExemplos:")
+        print("  python v3_cartesian.py 2      # Executa Prob2")
+        print("  python v3_cartesian.py 3      # Executa Prob3")
+        print("  python v3_cartesian.py 1      # Executa Unidimensional_vertical")
+        print("  python v3_cartesian.py summary # Executa Summary")
+        exit(0)
+
+    # Executar animação
+    print(f"Executando cena: {SCENE}")
     os.system(f"manim {script_name} {SCENE} {FLAGS}")
+
+
+def create_book_covers():
+    """
+    Cria um grupo de capas dos livros hallidayEd5 e hallidayEd12 posicionados no canto inferior direito.
+    Função simplificada específica para estes dois livros.
+
+    Returns:
+        Group: Grupo contendo as capas dos livros hallidayEd5 e hallidayEd12 formatadas
+    """
+    books = []
+
+    # Livro hallidayEd5
+    try:
+        hallidayEd5 = ImageMobject("media/images/hallidayEd5Vol3.png")
+        hallidayEd5.scale(1.5)
+        hallidayEd5.to_corner(DR)
+        hallidayEd5.shift(0.5 * DOWN + 0.4 * RIGHT)
+        books.append(hallidayEd5)
+    except Exception as e:
+        print(f"Erro ao carregar hallidayEd5: {e}")
+        # Placeholder para hallidayEd5
+        hallidayEd5_placeholder = Rectangle(
+            width=1, height=1.5, fill_color=BLUE, fill_opacity=0.3, stroke_color=WHITE
+        )
+        hallidayEd5_placeholder.add(Text("hallidayEd5", font_size=16))
+        hallidayEd5_placeholder.to_corner(DR).shift(0.5 * DOWN + 0.4 * RIGHT)
+        books.append(hallidayEd5_placeholder)
+
+    # Livro hallidayEd12
+    try:
+        hallidayEd12 = ImageMobject("media/images/hallidayEd12Vol3.jpg")
+        hallidayEd12.scale(0.173)
+        hallidayEd12.to_corner(DR)
+        hallidayEd12.shift(0.5 * DOWN + 1.73 * LEFT)
+        books.append(hallidayEd12)
+    except Exception as e:
+        print(f"Erro ao carregar hallidayEd12: {e}")
+        # Placeholder para hallidayEd12
+        hallidayEd12_placeholder = Rectangle(
+            width=1.5, height=2, fill_color=RED, fill_opacity=0.3, stroke_color=WHITE
+        )
+        hallidayEd12_placeholder.add(Text("hallidayEd12", font_size=16))
+        hallidayEd12_placeholder.to_corner(DR).shift(0.5 * DOWN + 1.7 * LEFT)
+        books.append(hallidayEd12_placeholder)
+
+    return Group(*books)

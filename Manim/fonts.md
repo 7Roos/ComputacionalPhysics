@@ -147,7 +147,7 @@ fonts = [
     "Linux Libertine Initials O",
     "Linux Libertine Mono O",
     "Linux Libertine O",
-    "Lobster Two",
+    "LobsterTwo",
     "Lohit Assamese",
     "Lohit Bengali",
     "Lohit Devanagari",

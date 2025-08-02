@@ -1,32 +1,97 @@
-# 1D
-**Fazer outros problemas**
+# Eletrostática 1D - Tutorial
 
-- Construir animação
-- Narrar
-- Editar
-- Fazer Thumb
+**Próximos passos:**
+- ✅ Construir animação
+- ⏳ Narrar
+- ⏳ Editar
+- ⏳ Fazer Thumb
 
 ## Problema
-Sejam duas cargas q1 e q2, separadas por uma distância r, qual é a força F_12 entre elas 
+Sejam duas cargas $q_1$ e $q_2$, separadas por uma distância $r$. Qual é a força $\vec{F}_{12}$ entre elas?
 
 ## Solução
-Primeiro, escolhemos o sitema de coordenadas: cartesiano unidimensional é a escolha mais óbvia, uma vez que, pela lei de Coulomb a força eletrostática é radial, isto é, aponta na direção que liga as duas cargas.
-Segundo, definimos o sistema de referência: a escolha mais cômoda é fixar uma das cargas na origem do sistema. E se queremos descobrir qual é a força que outas partículas exercem sobre a carga q1, colocamos ela na origem. 
-Terceiro passo, substituímos os índice 1 e 2 na equação geral da lei de Coulomb. 
-Agora, precisamos identicar as posições das partículas neste sistema de coordenadas a partir do sistema de referencai, isto é, identicar os vetores r1 e r2, referentes as partículas 1 e 2, em relação a origem. Como a partícula 1 está no origem, o vetor r1 na direção x é igual ao vetor nulo, ao passo que a partícula 2 está a uma distância R grande à direita da partícula 1, portanto, no eixo x posito. 
-A partir de agora é matemática. A distância relativa entre as duas cargas, isto é, r1 menos r2, será o vetor -R na direção x. Como é uma equação unidimensional,  podemos simplificar a expressão, obtendo uma força proporcional ao inverso do quadrado da distância e apontando no sentido negativo do eixo X. Mas o que acontece com a força F_21? Bem, agora movemos o sistema de referência para a carga q2. Assim, o vetor r2 na direção x é igual ao vetor nulo e como a partícula q1 esta à esq. de q2, o vetor r1 aponta no sentido negativo do eixo x. Dessa forma, a força F_21 possui o mesmo módulo de F_12, mesma direção x, porém com sentido oposto. Veja, nem precisamos tirar do bolso a terceira lei de Newton: o vetor F_12 = - F_21.
 
-### Sinal
-O próximo passo, é checar o que acontece com essa equação para diferentes parâmetros. Se as duas cargas tiverem o mesmo sinal, isto é, o produto das cargas q1 e q2 for posittvo, a força F_12 aponta no sentido negativo do eixo x, e do resultado anterior, F_21 aponta no sentido oposto, isto é, o sentido positivo do eixo x. Em outras palavras, as cargas se repelem. Note este outro aspecto importante dessa linguagem. Você não precisa ficar decorando aquela ladainha: os iguais se repelem e os opostos se atraem. Pois isso já está incluso na definição da linguagem, isto é, emerge naturamente sem ter que por nada com a mão. Caso as duas cargas tenham cargas opostas, isto é, o produto q1 e q2 for negativo, então tanto o sentido da força F_12 como F_21 será invertido, com F_12 apontando agora no sentido positivo do eixo x e F_21 no sentido negatico. Em outras palavras, as forças F_12 e F_21 serão atrativas. Num primeiro olhar, pode parecer que o preço dessa linguagem é o mesmo do que decorar aquele mantra que mencionei. Porém, quando seu sistema for mais complexo, isto é, com muito mais partículas, essa análise via decoreba começa a ficar complicada e sujeita a erros. Enquanto isso, nesta linguagem, basta escolher o sistema de coordenadas, de referência e identificar os vetores-posição. Depois disso é só matemática até o resultado final. Onde utilizaremos uma análise mais física, como vimos agora.
+### 1. Escolha do Sistema de Coordenadas
+Primeiro, escolhemos o sistema de coordenadas: **cartesiano unidimensional** é a escolha mais óbvia, uma vez que, pela Lei de Coulomb, a força eletrostática é radial, isto é, aponta na direção que liga as duas cargas.
 
-### Escala
-Vamos olhar agora para a escala. Se as cargas possuem o mesmo valor em módulo, podemos substituir q1 por Q grande, e assim, q2 também é igual a Q, e a força F_12 é igual a Q ao quadrado dividido por R ao quadrado na direção x, no sentido negativo. Mas o que ocorrerá, se a segunda carga for o dobro da primeira. Substituindo, notamos que a força será dobrada. Muito bem, mas qual é o impacto da variação da distância entre as partículas? Se a distância por o dobro, como R está ao quadrado, a força cairá com um fator 4 vezes. Ao passo que se a distância for metade, no denominador teremos o fator 1/4, multiplicando por 4 encima e embaixo, notamos que a força aumenta com um fator 4.
+### 2. Definição do Sistema de Referência
+Segundo, definimos o sistema de referência: a escolha mais conveniente é fixar uma das cargas na origem do sistema. Se queremos descobrir qual é a força que outras partículas exercem sobre a carga $q_1$, colocamos ela na origem.
 
-### Substituindo valores
+### 3. Aplicação da Lei de Coulomb
+Terceiro passo: substituímos os índices 1 e 2 na equação geral da Lei de Coulomb:
 
-## Substituição Halliday 5ª
-No Halliday, quinta edição, terceiro volume, capítulo 25 no exercício 3, há um problema neste mesmo formato. Onde são especificados q1=3.12 micro Coulomb, q2=-1.48 micro Coulomb e a distância r=0.123 m. Dessa forma, obtemos esse resultado.
-## Halliday 12ª
-Esse problema também está contido na 12ª Ed, no Vol 3, Cap. 21, Problema 5, alterando apenas os valores das cargas e a distântica entre elas.
+$$\vec{F}_{12} = k_0 \frac{q_1 q_2}{|\vec{r}_1 - \vec{r}_2|^3} (\vec{r}_1 - \vec{r}_2)$$
 
-## 2D
+### 4. Identificação das Posições
+Agora, precisamos identificar as posições das partículas neste sistema de coordenadas a partir do sistema de referência, isto é, identificar os vetores $\vec{r}_1$ e $\vec{r}_2$, referentes às partículas 1 e 2, em relação à origem. 
+
+Como a partícula 1 está na origem, o vetor $\vec{r}_1$ na direção $x$ é igual ao vetor nulo: $\vec{r}_1 = 0\hat{x}$. 
+
+A partícula 2 está a uma distância $R$ à direita da partícula 1, portanto, no eixo $x$ positivo: $\vec{r}_2 = R\hat{x}$.
+
+### 5. Desenvolvimento Matemático
+A partir de agora é matemática. A diferença vetorial entre as posições será:
+$$\vec{r}_1 - \vec{r}_2 = 0\hat{x} - R\hat{x} = -R\hat{x}$$
+
+Como é uma equação unidimensional, podemos simplificar a expressão, obtendo uma força proporcional ao inverso do quadrado da distância e apontando no sentido negativo do eixo $x$:
+
+$$\vec{F}_{12} = -k_0 \frac{q_1 q_2}{R^2} \hat{x}$$
+
+### 6. Terceira Lei de Newton
+Mas o que acontece com a força $\vec{F}_{21}$? Agora movemos o sistema de referência para a carga $q_2$. Assim:
+- $\vec{r}_2 = 0\hat{x}$ (carga 2 na origem)
+- $\vec{r}_1 = -R\hat{x}$ (carga 1 à esquerda de $q_2$)
+
+Dessa forma, a força $\vec{F}_{21}$ possui o mesmo módulo de $\vec{F}_{12}$, mesma direção $x$, porém com sentido oposto. 
+
+**Importante:** Nem precisamos invocar explicitamente a terceira lei de Newton - o resultado $\vec{F}_{12} = -\vec{F}_{21}$ emerge naturalmente da matemática!
+
+## Análise dos Sinais
+
+### Cargas de Mesmo Sinal ($q_1 q_2 > 0$)
+Se as duas cargas tiverem o mesmo sinal, isto é, o produto das cargas $q_1$ e $q_2$ for **positivo**, a força $\vec{F}_{12}$ aponta no sentido negativo do eixo $x$, e do resultado anterior, $\vec{F}_{21}$ aponta no sentido oposto, isto é, o sentido positivo do eixo $x$. 
+
+**Conclusão:** As cargas se repelem.
+
+### Cargas de Sinais Opostos ($q_1 q_2 < 0$)
+Caso as duas cargas tenham sinais opostos, isto é, o produto $q_1 q_2$ for **negativo**, então tanto o sentido da força $\vec{F}_{12}$ como $\vec{F}_{21}$ será invertido, com $\vec{F}_{12}$ apontando agora no sentido positivo do eixo $x$ e $\vec{F}_{21}$ no sentido negativo.
+
+**Conclusão:** As forças $\vec{F}_{12}$ e $\vec{F}_{21}$ serão atrativas.
+
+### Vantagem da Abordagem Matemática
+Note este aspecto importante dessa linguagem: você não precisa decorar aquela regra "*iguais se repelem e opostos se atraem*". Isso já está incluído na definição matemática - emerge naturalmente sem intervenção manual.
+
+Num primeiro olhar, pode parecer que o "custo" dessa linguagem é o mesmo de decorar a regra mencionada. Porém, quando seu sistema for mais complexo (com muitas partículas), essa análise via "decoreba" começa a ficar complicada e sujeita a erros. 
+
+Na linguagem matemática, basta:
+1. Escolher o sistema de coordenadas
+2. Definir o sistema de referência  
+3. Identificar os vetores-posição
+4. Aplicar a matemática até o resultado final
+5. Fazer a análise física
+
+## Análise de Escala
+
+### Cargas de Mesmo Módulo
+Se as cargas possuem o mesmo valor em módulo, podemos substituir $q_1 = Q$ e $q_2 = Q$:
+
+$$\vec{F}_{12} = -k_0 \frac{Q^2}{R^2} \hat{x}$$
+
+### Variação das Cargas
+Se a segunda carga for o dobro da primeira ($q_2 = 2q_1$), a força será dobrada.
+
+### Variação da Distância
+**Impacto da distância:**
+- Se a distância for o **dobro** ($R \to 2R$): como $R$ está ao quadrado, a força cairá por um fator de **4**.
+- Se a distância for a **metade** ($R \to R/2$): a força aumentará por um fator de **4**.
+
+## Substituição de Valores Numéricos
+
+### Halliday 5ª Edição
+No Halliday, 5ª edição, 3º volume, capítulo 25, exercício 3:
+- $q_1 = 3{,}12 \times 10^{-6}$ C
+- $q_2 = -1{,}48 \times 10^{-6}$ C  
+- $r = 0{,}123$ m
+
+### Halliday 12ª Edição
+Este problema também está contido na 12ª edição, Vol. 3, Cap. 21, Problema 5, alterando apenas os valores das cargas e a distância entre elas.

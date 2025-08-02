@@ -32,10 +32,16 @@ Os iteradores são ideais para processar dados que chegam em fluxo contínuo, co
 
 Por fim, a função split(',') divide uma string em uma lista de substrings, usando a vírgula (,) como delimitador. Vamos ver um exemplo...
 **Construir um exemplo**
+```python
+input_string = "1.0, 2.0, 3.0"
+substrings = input_string.split(',')
+print(substrings)  # Saída: ['1.0', ' 2.0', ' 3.0']
+```
 
 ## Investigando vários valores de h
 Agora, para investigar os vários valores de H, substituímos a linha com a função 'Map' em detrimento de apenas perguntar para o usuário o valor X, pois os valores de H agora serão iterados no 'Loop' na linha 15. Definimos o 'Loop' através do comando 'For' e o contador por 'i'. A função range(1, 9) gera uma sequência de números de 1 a 8, que serão utilizados como expoentes no cálculo de h. 
 **Calculamos o valor**
+
 
 # Derivada numérica com Julia
 A função f(x) é definida usando a palavra-chave function e retorna o cosseno de x usando a função cos(x) da biblioteca padrão de Julia. Na linha 9, 'Print' exibe uma mensagem na tela. Na linha 10, a função 'Readline' lê uma linha inteira digitada pelo usuário como uma string na entrada padrão (o teclado). Enquanto isso, a função 'Split' divide a 'String' em 'Substrings', usando a vírgula como delimitador e a função 'Parse' converte cada substring em um número de ponto flutuante de 64 bits. Dessa forma, atribui os valores informados pelo usuário e convertidos às variáveis X e H. Essa sintaxe em Julia é chamada de 'Broadcast' e aplica a função 'Parse' a cada elemento do 'Array' retornado por 'Split'. 

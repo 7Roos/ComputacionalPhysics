@@ -1,17 +1,11 @@
 Vou trabalhar com diferentes séries e ir alternando para ver o que é mais 'lucrativo'.
 
 **1. Fortran:**
-   -Introdução ao Fortran - Primeiros Passos
-      -Hello word
-         *Título sugerido: "Programando em Fortran: Do Zero ao Hello World!"*
-      -Estrutura básica de um programa Fortran e Regras para nomes de arquivos e variáveis: first character must be letter,
-      numbers and underscore is allowed - alphanumeric, extension (f, f90, f95), name of program, tokens e unidade de programa
-      -O comando print/write
-   -Operações Aritméticas em Fortran (Números Inteiros): Tipo implícito, Operadores aritméticos (Soma, subtração, multiplicação, 
-   divisão por inteiro, exp), tokens  e sua ordem de precedência, Formatação de saída para números inteiros, Tipo explícito, 
+   - Operações Aritméticas em Fortran (Números Inteiros): Tipo implícito, Operadores aritméticos (Soma, subtração, multiplicação, 
+   divisão por inteiro, exp), tokens  e sua ordem de precedência, Tipo explícito, 
    Especificando o tamanho do inteiro (INTEGER(KIND=4) e INTEGER(KIND=8)), parâmetro
       *Título sugerido: "Fortran para Iniciantes: Dominando Cálculos com Números Inteiros"*
-   -Operações Aritméticas em Fortran (Números Reais): Tipos de dados implícitos e explícitos (REAL),Operadores aritméticos para números reais, Formatação de saída para números reais, parâmetro
+   - Operações Aritméticas em Fortran (Números Reais): Tipos de dados implícitos e explícitos (REAL),Operadores aritméticos para números reais, Formatação de saída para números reais, parâmetro
       *Título sugerido: "Números Reais em Fortran: Guia Completo para Cálculos Precisos"*
    -Real dupla precisão
    -Problema 1: Raiz cúbica de um número negativo
@@ -31,6 +25,7 @@ Vou trabalhar com diferentes séries e ir alternando para ver o que é mais 'luc
    -Arquivo de dados
    -Funções
    -Subrotina
+   -Good practices for naming in Fortran
    -Módulos
    -Programação orientada a objetos em Fortran
 2. Gnuplot:
@@ -66,7 +61,7 @@ Vou trabalhar com diferentes séries e ir alternando para ver o que é mais 'luc
       g('set title "Exemplo de plot com Python"')
       g.plot('sin(x)')
    -Estudar Plotly, Geogebra ou Bokeh (gráficos interativos)
-3. Física 3: Coord. Cartesianas
+3. Física 3: 
    -Força elétrica entre duas partículas 1D- Força?
    -Força elétrica entre três partículas 1D- estabilidade
    -Força elétrica entre duas partículas 2D

@@ -1,31 +1,33 @@
-program Fortran_inDepth
-   implicit none
-   
-   ! Chama a subrotina de boas-vindas
-   call welcome_message()
-   
-   ! Chama novamente para demonstrar reuso
-   print *, 'Chamando a subrotina novamente:'
-   call welcome_message()
+! This a comment line in Fortran, which is 
+! ignored by the compiler.
+! The exclamation mark is reserved symbol for 
+! comments in Fortran.
+program arithmeticOperations
+   print *, "|| Arithmetic Operations with Integers in Fortran ||"
+   print *, " - Addition: 2 + 3 =       ", 2 + 3
+   print *, " - Subtraction: 5 - 2 =    ", 5 - 2
+   print *, " - Multiplication: 4 * 3 = ", 4 * 3
+   print *, " - Division: 10 / 2 =      ", 10 / 2
+   print *, " - Exponentiation: 2 ** 3 =", 2 ** 3
 
-end program Fortran_inDepth
+   !print *, " | Special cases: |"
+   !print *, " This a continuation line in 'Fortran' &
+   !& which is used to split long lines."
+   !print 10, "Exp negative base: -2 ** 2 =", -2 ** 2
+   !print 10, "Exp negative base: (-2) ** 2 =", (-2) ** 2
+   !print 11, "Denominator > numerator: 3 / 4 =", 3 / 4, &
+   !& ', rest =', mod(3, 4)
+   !print 11, "Denominator = numerator: 4 / 4 =", 4 / 4, &
+   !& ', rest =', mod(4, 4)
+   !print 11, "Denominator < numerator(not multiple): 5 / 4 =", 5 / 4, &
+   !& ', rest =', mod(5, 4)
+   !print 11, "Denominator < numerator(multiple): 8 / 4 =", 8 / 4, &
+   !& ', rest =', mod(8, 4)
 
-! Subrotina que imprime a mensagem de boas-vindas
-subroutine welcome_message()
-   implicit none
-   
-   ! Print a nicely formatted message
-   print '(/, 10x, a)', '*************************************'
-   print '(10x, a)', '*                                   *'
-   print '(10x, a)', '*           Hello World!           *'
-   print '(10x, a)', '*                                   *'
-   print '(10x, a, /)', '*************************************'
-   
-   ! Alternative format using write
-   write (*, '(/, 10x, a)') '*************************************'
-   write (*, '(10x, a)') '*                                   *'
-   write (*, '(10x, a)') '*           Hello World!           *'
-   write (*, '(10x, a)') '*                                   *'
-   write (*, '(10x, a, /)') '*************************************'
-   
-end subroutine welcome_message
+   print *, " | Error cases: |"
+   !print *, " - Division by zero: 10 / 0 = ", 10 / 0
+   !print *, " - Multiplication: 4 * -3 = ", 4 * -3
+   print *, " - Undefined variable: 2 + j =", 2 + j
+!10 format ('->', A47, I3)
+!11 format ('->', A47, I3, A8, I3)
+end program arithmeticOperations
